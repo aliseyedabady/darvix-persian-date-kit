@@ -1,0 +1,234 @@
+:root {
+  --dvx-pdp-bg: #ffffff;
+  --dvx-pdp-fg: #111827;
+  --dvx-pdp-muted: #6b7280;
+  --dvx-pdp-border: #e5e7eb;
+  --dvx-pdp-shadow: 0 10px 20px rgba(0, 0, 0, 0.08);
+  --dvx-pdp-accent: #2563eb;
+  --dvx-pdp-accentFg: #ffffff;
+  --dvx-pdp-ring: rgba(37, 99, 235, 0.3);
+  --dvx-pdp-dayHover: rgba(37, 99, 235, 0.08);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --dvx-pdp-bg: #0b1220;
+    --dvx-pdp-fg: #e5e7eb;
+    --dvx-pdp-muted: #9ca3af;
+    --dvx-pdp-border: #243045;
+    --dvx-pdp-shadow: 0 10px 20px rgba(0, 0, 0, 0.35);
+    --dvx-pdp-accent: #60a5fa;
+    --dvx-pdp-accentFg: #0b1220;
+    --dvx-pdp-ring: rgba(96, 165, 250, 0.35);
+    --dvx-pdp-dayHover: rgba(96, 165, 250, 0.12);
+  }
+}
+
+.dvx-pdp {
+  position: relative;
+  display: inline-block;
+  direction: rtl;
+  color: var(--dvx-pdp-fg);
+  font: inherit;
+}
+
+.dvx-pdp--inline {
+  display: block;
+}
+
+.dvx-pdp__control {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.dvx-pdp__input {
+  width: 160px;
+  padding: 8px 10px;
+  border-radius: 10px;
+  border: 1px solid var(--dvx-pdp-border);
+  background: var(--dvx-pdp-bg);
+  color: var(--dvx-pdp-fg);
+  outline: none;
+}
+
+.dvx-pdp__input:focus {
+  box-shadow: 0 0 0 4px var(--dvx-pdp-ring);
+  border-color: var(--dvx-pdp-accent);
+}
+
+.dvx-pdp__button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 10px;
+  border: 1px solid var(--dvx-pdp-border);
+  background: var(--dvx-pdp-bg);
+  color: var(--dvx-pdp-fg);
+  cursor: pointer;
+}
+
+.dvx-pdp__button:disabled,
+.dvx-pdp__input:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.dvx-pdp__popover {
+  position: absolute;
+  top: calc(100% + 8px);
+  right: 0;
+  z-index: 50;
+}
+
+.dvx-pdp__calendar {
+  width: 280px;
+  border-radius: 14px;
+  border: 1px solid var(--dvx-pdp-border);
+  background: var(--dvx-pdp-bg);
+  box-shadow: var(--dvx-pdp-shadow);
+  padding: 10px;
+  outline: none;
+}
+
+.dvx-pdp__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  margin-bottom: 10px;
+}
+
+.dvx-pdp__monthLabel {
+  font-weight: 600;
+  font-size: 14px;
+  border: 1px solid transparent;
+  background: transparent;
+  color: var(--dvx-pdp-fg);
+  padding: 6px 10px;
+  border-radius: 10px;
+  cursor: pointer;
+}
+
+.dvx-pdp__nav {
+  width: 34px;
+  height: 34px;
+  border-radius: 10px;
+  border: 1px solid var(--dvx-pdp-border);
+  background: var(--dvx-pdp-bg);
+  color: var(--dvx-pdp-fg);
+  cursor: pointer;
+}
+
+.dvx-pdp__grid {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.dvx-pdp__weekdays {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 6px;
+}
+
+.dvx-pdp__weekday {
+  text-align: center;
+  font-size: 12px;
+  color: var(--dvx-pdp-muted);
+  user-select: none;
+}
+
+.dvx-pdp__days {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.dvx-pdp__row {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 6px;
+}
+
+.dvx-pdp__day {
+  height: 34px;
+  border-radius: 10px;
+  border: 1px solid transparent;
+  background: transparent;
+  color: var(--dvx-pdp-fg);
+  cursor: pointer;
+}
+
+.dvx-pdp__day:hover {
+  background: var(--dvx-pdp-dayHover);
+}
+
+.dvx-pdp__day--outside {
+  color: var(--dvx-pdp-muted);
+}
+
+.dvx-pdp__day--today {
+  border-color: var(--dvx-pdp-border);
+}
+
+.dvx-pdp__day--selected {
+  background: var(--dvx-pdp-accent);
+  color: var(--dvx-pdp-accentFg);
+}
+
+.dvx-pdp__day--inRange {
+  background: var(--dvx-pdp-dayHover);
+}
+
+.dvx-pdp__day--rangeStart,
+.dvx-pdp__day--rangeEnd {
+  background: var(--dvx-pdp-accent);
+  color: var(--dvx-pdp-accentFg);
+}
+
+.dvx-pdp__day--disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+.dvx-pdp__day--focused {
+  box-shadow: 0 0 0 4px var(--dvx-pdp-ring);
+}
+
+.dvx-pdp__panel {
+  padding: 2px 0 0;
+}
+
+.dvx-pdp__panelGrid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+}
+
+.dvx-pdp__cell {
+  height: 38px;
+  border-radius: 12px;
+  border: 1px solid var(--dvx-pdp-border);
+  background: var(--dvx-pdp-bg);
+  color: var(--dvx-pdp-fg);
+  cursor: pointer;
+}
+
+.dvx-pdp__cell:hover {
+  background: var(--dvx-pdp-dayHover);
+}
+
+.dvx-pdp__cell:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+.dvx-pdp__cell--active {
+  border-color: var(--dvx-pdp-accent);
+  box-shadow: 0 0 0 4px var(--dvx-pdp-ring);
+}
+
+
