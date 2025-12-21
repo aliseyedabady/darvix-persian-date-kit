@@ -1,4 +1,4 @@
-# @darvix/persian-date-kit
+# persian-date-kit
 
 Production-ready Persian (Jalali) date pickers for React.
 
@@ -13,14 +13,14 @@ Production-ready Persian (Jalali) date pickers for React.
 ## Install
 
 ```bash
-npm i @darvix/persian-date-kit
+npm i persian-date-kit
 ```
 
 ## Styles (optional)
 If you want the default look, import the stylesheet:
 
 ```ts
-import '@darvix/persian-date-kit/styles.css'
+import 'persian-date-kit/styles.css'
 ```
 
 If you skip it, you can style via your own CSS + the `classes` prop.
@@ -31,8 +31,8 @@ If you skip it, you can style via your own CSS + the `classes` prop.
 
 ```tsx
 import { useState } from 'react'
-import { PersianDatePicker } from '@darvix/persian-date-kit'
-import '@darvix/persian-date-kit/styles.css'
+import { PersianDatePicker } from 'persian-date-kit'
+import 'persian-date-kit/styles.css'
 
 const monthLabels = [
   'فروردین',
@@ -70,7 +70,7 @@ export function Example() {
 
 ```tsx
 import { useState } from 'react'
-import { PersianDatePicker } from '@darvix/persian-date-kit'
+import { PersianDatePicker } from 'persian-date-kit'
 
 export function InlineCalendar() {
   const [value, setValue] = useState<Date | null>(new Date())
@@ -82,7 +82,7 @@ export function InlineCalendar() {
 
 ```tsx
 import { useState } from 'react'
-import { PersianDateRangePicker, type PersianDateRange } from '@darvix/persian-date-kit'
+import { PersianDateRangePicker, type PersianDateRange } from 'persian-date-kit'
 
 export function RangeExample() {
   const [range, setRange] = useState<PersianDateRange>({ start: null, end: null })
@@ -109,7 +109,7 @@ npm i react-hook-form
 
 ```tsx
 import { useForm } from 'react-hook-form'
-import { RHF_PersianDatePicker } from '@darvix/persian-date-kit/react-hook-form'
+import { RHF_PersianDatePicker } from 'persian-date-kit/react-hook-form'
 
 type FormValues = { birthDate: Date | null }
 
