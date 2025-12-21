@@ -1,73 +1,148 @@
-# React + TypeScript + Vite
+# @darvix/persian-date-kit
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Production-ready Persian (Jalali) date pickers for React.
 
-Currently, two official plugins are available:
+## Key principles
+- **Gregorian-only internally**: component values are always `Date | null` (Gregorian). Jalali is only for display/input.
+- **Controlled components**: you own the state (`value` + `onChange`).
+- **Logic separated from UI**: calendar grid/conversions are reusable utilities.
+- **SSR-safe**: no `window` usage during render.
+- **RTL-first**: `dir="rtl"` by default.
+- **Optional styles**: ship CSS variables + minimal classes; you can override everything.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## Install
 
-## React Compiler
-
-The React Compiler is currently not compatible with SWC. See [this issue](https://github.com/vitejs/vite-plugin-react/issues/428) for tracking the progress.
-
-## Expanding the ESLint configuration
-
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
-
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
-
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+```bash
+npm i @darvix/persian-date-kit
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+## Styles (optional)
+If you want the default look, import the stylesheet:
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+```ts
+import '@darvix/persian-date-kit/styles.css'
+```
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+If you skip it, you can style via your own CSS + the `classes` prop.
+
+## Usage
+
+### Single date picker
+
+```tsx
+import { useState } from 'react'
+import { PersianDatePicker } from '@darvix/persian-date-kit'
+import '@darvix/persian-date-kit/styles.css'
+
+const monthLabels = [
+  'فروردین',
+  'اردیبهشت',
+  'خرداد',
+  'تیر',
+  'مرداد',
+  'شهریور',
+  'مهر',
+  'آبان',
+  'آذر',
+  'دی',
+  'بهمن',
+  'اسفند',
+]
+
+export function Example() {
+  const [value, setValue] = useState<Date | null>(new Date())
+
+  return (
+    <PersianDatePicker
+      value={value}
+      onChange={setValue}
+      placeholder="YYYY/MM/DD"
+      monthLabels={monthLabels}
+      weekdays={['ش', 'ی', 'د', 'س', 'چ', 'پ', 'ج']}
+      minDate={new Date(2020, 0, 1)}
+      maxDate={new Date(2030, 11, 31)}
+    />
+  )
+}
+```
+
+### Inline calendar (no input)
+
+```tsx
+import { useState } from 'react'
+import { PersianDatePicker } from '@darvix/persian-date-kit'
+
+export function InlineCalendar() {
+  const [value, setValue] = useState<Date | null>(new Date())
+  return <PersianDatePicker mode="inline" value={value} onChange={setValue} />
+}
+```
+
+### Range picker (start/end)
+
+```tsx
+import { useState } from 'react'
+import { PersianDateRangePicker, type PersianDateRange } from '@darvix/persian-date-kit'
+
+export function RangeExample() {
+  const [range, setRange] = useState<PersianDateRange>({ start: null, end: null })
+
+  return (
+    <PersianDateRangePicker
+      value={range}
+      onChange={setRange}
+      // inputVariant="two" (default) => two inputs
+      inputVariant="single"
+      placeholder="بازه (YYYY/MM/DD - YYYY/MM/DD)"
+    />
+  )
+}
+```
+
+## React Hook Form (optional adapter)
+The core package has **no required** form dependency.
+If you want React Hook Form integration, import from the subpath:
+
+```bash
+npm i react-hook-form
+```
+
+```tsx
+import { useForm } from 'react-hook-form'
+import { RHF_PersianDatePicker } from '@darvix/persian-date-kit/react-hook-form'
+
+type FormValues = { birthDate: Date | null }
+
+export function RHFExample() {
+  const { control, handleSubmit } = useForm<FormValues>({ defaultValues: { birthDate: null } })
+
+  return (
+    <form onSubmit={handleSubmit(console.log)}>
+      <RHF_PersianDatePicker name="birthDate" control={control} placeholder="YYYY/MM/DD" />
+      <button type="submit">Submit</button>
+    </form>
+  )
+}
+```
+
+## API notes
+
+### `PersianDatePicker`
+- **`value`**: `Date | null`
+- **`onChange`**: `(date: Date | null) => void`
+- **`minDate` / `maxDate`**: limit selectable dates (Gregorian dates)
+- **`mode`**: `'popover' | 'inline'`
+- **`monthLabels`**: 12 strings (no hardcoded locale in the library)
+- **`weekdays`**: 7 strings
+
+### `PersianDateRangePicker`
+- **`value`**: `{ start: Date | null; end: Date | null }`
+- **`onChange`**: `(range) => void`
+- **`inputVariant`**: `'two' | 'single'`
+
+## Development (this repo)
+
+```bash
+npm run dev
+npm run build
 ```
