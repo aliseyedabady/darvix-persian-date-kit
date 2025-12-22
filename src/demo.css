@@ -1,0 +1,134 @@
+.demo-page {
+  max-width: 980px;
+  margin: 0 auto;
+  padding: 28px 16px 64px;
+}
+
+.demo-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 18px;
+}
+
+.demo-title {
+  margin: 0;
+  font-size: 20px;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+}
+
+.demo-subtitle {
+  margin: 6px 0 0;
+  opacity: 0.75;
+  font-size: 13px;
+}
+
+.demo-actions {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+.demo-button {
+  height: 34px;
+  padding: 0 12px;
+  border-radius: 10px;
+  border: 1px solid rgba(0, 0, 0, 0.12);
+  background: rgba(255, 255, 255, 0.7);
+  color: inherit;
+  cursor: pointer;
+}
+
+@media (prefers-color-scheme: dark) {
+  .demo-button {
+    border-color: rgba(255, 255, 255, 0.15);
+    background: rgba(11, 18, 32, 0.65);
+  }
+}
+
+.demo-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 14px;
+}
+
+@media (min-width: 900px) {
+  .demo-grid {
+    grid-template-columns: 1fr 1fr;
+    align-items: start;
+  }
+}
+
+.demo-card {
+  border-radius: 16px;
+  padding: 14px;
+  background: rgba(255, 255, 255, 0.7);
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  backdrop-filter: blur(8px);
+}
+
+@media (prefers-color-scheme: dark) {
+  .demo-card {
+    background: rgba(11, 18, 32, 0.7);
+    border-color: rgba(255, 255, 255, 0.10);
+  }
+}
+
+.demo-cardTitle {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 10px;
+  margin: 0 0 10px;
+  font-weight: 700;
+  font-size: 14px;
+}
+
+.demo-muted {
+  opacity: 0.75;
+  font-size: 12px;
+}
+
+.demo-row {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.demo-code {
+  margin: 12px 0 0;
+  padding: 10px 12px;
+  border-radius: 12px;
+  background: rgba(15, 23, 42, 0.06);
+  border: 1px solid rgba(15, 23, 42, 0.08);
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+  font-size: 12px;
+  overflow: auto;
+}
+
+@media (prefers-color-scheme: dark) {
+  .demo-code {
+    background: rgba(229, 231, 235, 0.06);
+    border-color: rgba(229, 231, 235, 0.10);
+  }
+}
+
+.demo-edgeBox {
+  margin-top: 10px;
+  border-radius: 14px;
+  border: 1px dashed rgba(0, 0, 0, 0.25);
+  padding: 12px;
+  display: grid;
+  gap: 10px;
+}
+
+@media (prefers-color-scheme: dark) {
+  .demo-edgeBox {
+    border-color: rgba(255, 255, 255, 0.25);
+  }
+}
+
+
