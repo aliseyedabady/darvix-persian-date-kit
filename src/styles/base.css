@@ -83,6 +83,11 @@
   z-index: 50;
 }
 
+.dvx-pdp__popover--portal {
+  position: fixed;
+  z-index: 9999;
+}
+
 .dvx-pdp__calendar {
   width: 280px;
   border-radius: 14px;

@@ -28,6 +28,7 @@ function App() {
 
   const minDate = useMemo(() => new Date(2020, 0, 1), []);
   const maxDate = useMemo(() => new Date(2030, 11, 31), []);
+  const [edgeValue, setEdgeValue] = useState<Date | null>(new Date());
 
   return (
     <div style={{ padding: 24, maxWidth: 520, margin: "0 auto" }} dir="rtl">
@@ -122,6 +123,35 @@ function App() {
           <div>
             end: {rangeValue.end ? rangeValue.end.toISOString() : "null"}
           </div>
+        </div>
+      </div>
+
+      <div style={{ marginTop: 24 }}>
+        <div style={{ marginBottom: 10, opacity: 0.9 }}>
+          تست جلوگیری از بیرون‌زدگی پاپ‌اور (Edge)
+        </div>
+        <div
+          style={{
+            position: "fixed",
+            right: 8,
+            bottom: 8,
+            width: 260,
+            padding: 8,
+            border: "1px dashed #999",
+            background: "rgba(255,255,255,0.85)",
+          }}
+        >
+          <div style={{ marginBottom: 8, fontSize: 12, opacity: 0.8 }}>
+            این باکس نزدیک گوشه‌ی صفحه است.
+          </div>
+          <PersianDatePicker
+            value={edgeValue}
+            onChange={setEdgeValue}
+            placeholder="YYYY/MM/DD"
+            monthLabels={persianMonthLabels}
+            weekdays={["ش", "ی", "د", "س", "چ", "پ", "ج"]}
+            popover={{ portal: true, padding: 8, gutter: 8, strategy: "fixed" }}
+          />
         </div>
       </div>
 
