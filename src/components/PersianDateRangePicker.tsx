@@ -13,38 +13,24 @@ import {
 } from "../utils/calendarGrid";
 import { fromJalaliParts, toJalaliParts } from "../adapters/dayjsAdapter";
 import { usePopoverPosition } from "../utils/usePopoverPosition";
+import type { BasePickerProps, BasePickerClasses } from "../types/shared";
 
 export type PersianDateRange = {
   start: Date | null;
   end: Date | null;
 };
 
-export type PersianDateRangePickerClasses = Partial<{
-  root: string;
-  input: string;
-  button: string;
-  popover: string;
-  header: string;
-  navButton: string;
-  monthLabel: string;
-  grid: string;
-  weekday: string;
-  day: string;
-  dayOutside: string;
-  dayDisabled: string;
-  dayToday: string;
-  dayRangeStart: string;
-  dayRangeEnd: string;
-  dayInRange: string;
-}>;
+export type PersianDateRangePickerClasses = Partial<
+  BasePickerClasses & {
+    dayRangeStart: string;
+    dayRangeEnd: string;
+    dayInRange: string;
+  }
+>;
 
-export type PersianDateRangePickerProps = {
+export type PersianDateRangePickerProps = BasePickerProps & {
   value: PersianDateRange;
   onChange: (range: PersianDateRange) => void;
-  minDate?: Date;
-  maxDate?: Date;
-  disabled?: boolean;
-
   /**
    * Input layout:
    * - `two`: (default) two inputs (start/end)
@@ -53,49 +39,8 @@ export type PersianDateRangePickerProps = {
   inputVariant?: "two" | "single";
   placeholder?: string;
   rangeSeparator?: string;
-
   placeholderStart?: string;
   placeholderEnd?: string;
-
-  /**
-   * Control the open state of the calendar popover (popover mode only).
-   */
-  open?: boolean;
-  onOpenChange?: (open: boolean) => void;
-
-  /**
-   * Rendering mode:
-   * - `popover`: (default) two inputs + popover calendar
-   * - `inline`: always-visible calendar, no inputs
-   */
-  mode?: "popover" | "inline";
-
-  popover?: {
-    portal?: boolean;
-    gutter?: number;
-    padding?: number;
-    strategy?: "fixed" | "absolute";
-    placements?: Array<"bottom" | "top" | "left" | "right">;
-    align?: "start" | "center" | "end";
-  };
-
-  /**
-   * Formats a Date for display in inputs.
-   * Default: numeric Jalali `YYYY/MM/DD` (no locale month/day names).
-   */
-  formatValue?: (date: Date) => string;
-
-  /**
-   * Parses user text into a Gregorian Date.
-   * Default: parses numeric Jalali `YYYY/MM/DD` (also accepts loose separators).
-   */
-  parseValue?: (text: string) => Date | null;
-
-  weekdays?: string[];
-  monthLabels?: string[];
-  renderMonthLabel?: (jy: number, jm: number) => React.ReactNode;
-
-  className?: string;
   classes?: PersianDateRangePickerClasses;
 };
 
@@ -152,6 +97,8 @@ export function PersianDateRangePicker(props: PersianDateRangePickerProps) {
     weekdays,
     monthLabels,
     renderMonthLabel,
+    prevIcon,
+    nextIcon,
     className,
     classes,
   } = props;
@@ -561,7 +508,7 @@ export function PersianDateRangePicker(props: PersianDateRangePickerProps) {
           }
           aria-label="Previous month"
         >
-          ‹
+          {prevIcon ?? "‹"}
         </button>
         <button
           type="button"
@@ -581,7 +528,7 @@ export function PersianDateRangePicker(props: PersianDateRangePickerProps) {
           }
           aria-label="Next month"
         >
-          ›
+          {nextIcon ?? "›"}
         </button>
       </div>
 

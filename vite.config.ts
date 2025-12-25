@@ -21,6 +21,13 @@ export default defineConfig({
     },
     rollupOptions: {
       external: ['react', 'react-dom', 'react/jsx-runtime', 'react-hook-form'],
+      output: {
+        // Prevent unnecessary code splitting
+        // Chunks will only be created if code can't be inlined
+        manualChunks: undefined,
+      },
     },
+    // Ensure we don't minify in a way that creates extra chunks
+    minify: 'esbuild',
   },
 })

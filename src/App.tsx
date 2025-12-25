@@ -34,23 +34,45 @@ function App() {
 
   return (
     <div className="demo-page" dir="rtl">
-      <div className="demo-header">
-        <div>
-          <h1 className="demo-title">persian-date-kit demo</h1>
-          <p className="demo-subtitle">
-            نمونه‌ها برای بررسی رفتار (RTL، رنج، inline، و popover positioning)
-          </p>
+      <section className="demo-hero">
+        <div className="demo-header">
+          <div>
+            <h1 className="demo-title">persian-date-kit</h1>
+            <p className="demo-subtitle">
+              یک Date Picker حرفه‌ای برای ری‌اکت با نمایش جلالی و ذخیره‌سازی
+              گرگوری. RTL-first، کنترل‌شده، SSR-safe و مناسب انتشار روی npm.
+            </p>
+          </div>
+          <div className="demo-actions">
+            <button
+              type="button"
+              className="demo-button demo-buttonPrimary"
+              onClick={() => setShowEdgeTest((v) => !v)}
+            >
+              {showEdgeTest ? "بستن تست Edge" : "نمایش تست Edge"}
+            </button>
+          </div>
         </div>
-        <div className="demo-actions">
-          <button
-            type="button"
-            className="demo-button"
-            onClick={() => setShowEdgeTest((v) => !v)}
-          >
-            {showEdgeTest ? "بستن تست Edge" : "نمایش تست Edge"}
-          </button>
+
+        <div className="demo-kpis">
+          <div className="demo-kpi">
+            <div className="demo-kpiLabel">Internal value</div>
+            <div className="demo-kpiValue">Gregorian Date</div>
+          </div>
+          <div className="demo-kpi">
+            <div className="demo-kpiLabel">Display / input</div>
+            <div className="demo-kpiValue">Jalali</div>
+          </div>
+          <div className="demo-kpi">
+            <div className="demo-kpiLabel">Modes</div>
+            <div className="demo-kpiValue">Popover / Inline</div>
+          </div>
+          <div className="demo-kpi">
+            <div className="demo-kpiLabel">Extras</div>
+            <div className="demo-kpiValue">Range + RHF</div>
+          </div>
         </div>
-      </div>
+      </section>
 
       {/*
         React Hook Form (example):
@@ -91,7 +113,12 @@ function App() {
               placeholder="YYYY/MM/DD"
               monthLabels={persianMonthLabels}
               weekdays={["ش", "ی", "د", "س", "چ", "پ", "ج"]}
-              popover={{ portal: true, padding: 8, gutter: 8, strategy: "fixed" }}
+              popover={{
+                portal: true,
+                padding: 8,
+                gutter: 8,
+                strategy: "fixed",
+              }}
             />
           </div>
           <pre className="demo-code">{`Gregorian: ${
@@ -133,7 +160,9 @@ function App() {
           />
           <pre className="demo-code">{`start: ${
             rangeValue.start ? rangeValue.start.toISOString() : "null"
-          }\nend:   ${rangeValue.end ? rangeValue.end.toISOString() : "null"}`}</pre>
+          }\nend:   ${
+            rangeValue.end ? rangeValue.end.toISOString() : "null"
+          }`}</pre>
         </section>
 
         <section className="demo-card">
@@ -159,8 +188,8 @@ function App() {
           </div>
           <div className="demo-edgeBox">
             <div className="demo-muted">
-              این تست را فعال کن، سپس تقویم را باز کن و اسکرول/ریزایز کن تا رفتار
-              clamp/flip را ببینی.
+              این تست را فعال کن، سپس تقویم را باز کن و اسکرول/ریزایز کن تا
+              رفتار clamp/flip را ببینی.
             </div>
             <PersianDatePicker
               value={edgeValue}

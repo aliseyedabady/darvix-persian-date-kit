@@ -15,6 +15,7 @@
     "src/components/**/*",
     "src/utils/**/*",
     "src/adapters/**/*",
+    "src/types/**/*",
     "src/styles/**/*"
   ]
 }

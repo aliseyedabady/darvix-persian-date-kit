@@ -1,7 +1,33 @@
 {
   "name": "persian-date-kit",
   "version": "0.0.3",
+  "description": "Production-ready Persian (Jalali) date pickers for React with Gregorian-only values.",
+  "keywords": [
+    "react",
+    "datepicker",
+    "date-picker",
+    "jalali",
+    "persian",
+    "shamsi",
+    "calendar",
+    "rtl",
+    "dayjs",
+    "typescript"
+  ],
+  "license": "MIT",
+  "author": "Darvix",
   "type": "module",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/darvix/persian-date-kit.git"
+  },
+  "homepage": "https://github.com/darvix/persian-date-kit#readme",
+  "bugs": {
+    "url": "https://github.com/darvix/persian-date-kit/issues"
+  },
+  "engines": {
+    "node": ">=18"
+  },
   "main": "./dist/index.cjs",
   "module": "./dist/index.mjs",
   "types": "./dist/index.d.ts",
@@ -19,7 +45,9 @@
     "./styles.css": "./dist/styles.css"
   },
   "files": [
-    "dist"
+    "dist",
+    "README.md",
+    "LICENSE"
   ],
   "sideEffects": [
     "**/*.css"
@@ -46,6 +74,7 @@
   },
   "devDependencies": {
     "@eslint/js": "^9.39.1",
+    "@fontsource/vazirmatn": "^5.2.8",
     "@types/node": "^24.10.1",
     "@types/react": "^19.2.5",
     "@types/react-dom": "^19.2.3",

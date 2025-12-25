@@ -13,84 +13,18 @@ import {
 } from "../utils/calendarGrid";
 import { fromJalaliParts, toJalaliParts } from "../adapters/dayjsAdapter";
 import { usePopoverPosition } from "../utils/usePopoverPosition";
+import type { BasePickerProps, BasePickerClasses } from "../types/shared";
 
-export type PersianDatePickerClasses = Partial<{
-  root: string;
-  input: string;
-  button: string;
-  popover: string;
-  header: string;
-  navButton: string;
-  monthLabel: string;
-  grid: string;
-  weekday: string;
-  day: string;
-  dayOutside: string;
-  daySelected: string;
-  dayDisabled: string;
-  dayToday: string;
-}>;
+export type PersianDatePickerClasses = Partial<
+  BasePickerClasses & {
+    daySelected: string;
+  }
+>;
 
-export type PersianDatePickerProps = {
+export type PersianDatePickerProps = BasePickerProps & {
   value: Date | null;
   onChange: (date: Date | null) => void;
-  minDate?: Date;
-  maxDate?: Date;
-  disabled?: boolean;
   placeholder?: string;
-  /**
-   * Control the open state of the calendar popover.
-   * If provided, the component becomes controlled for open/close.
-   */
-  open?: boolean;
-  onOpenChange?: (open: boolean) => void;
-  /**
-   * Rendering mode:
-   * - `popover`: default input + popover calendar
-   * - `inline`: always-visible calendar, no input
-   */
-  mode?: "popover" | "inline";
-
-  popover?: {
-    portal?: boolean;
-    gutter?: number;
-    padding?: number;
-    strategy?: "fixed" | "absolute";
-    placements?: Array<"bottom" | "top" | "left" | "right">;
-    align?: "start" | "center" | "end";
-  };
-
-  /**
-   * Formats the controlled `value` for display in the input.
-   * Default: numeric Jalali `YYYY/MM/DD` (no locale month/day names).
-   */
-  formatValue?: (date: Date) => string;
-
-  /**
-   * Parses user input into a Gregorian Date.
-   * Default: parses numeric Jalali `YYYY/MM/DD` (also accepts loose separators).
-   */
-  parseValue?: (text: string) => Date | null;
-
-  /**
-   * Weekday headers. If omitted, numeric headers are used.
-   * Provide 7 items matching the calendar grid order.
-   */
-  weekdays?: string[];
-
-  /**
-   * Month labels (index 0 => month 1). If omitted, month numbers are shown.
-   * Provide 12 items.
-   */
-  monthLabels?: string[];
-
-  /**
-   * Month label renderer (e.g. supply localized month name).
-   * Default: `jy / jm` numeric.
-   */
-  renderMonthLabel?: (jy: number, jm: number) => React.ReactNode;
-
-  className?: string;
   classes?: PersianDatePickerClasses;
 };
 
@@ -144,6 +78,8 @@ export function PersianDatePicker(props: PersianDatePickerProps) {
     weekdays,
     monthLabels,
     renderMonthLabel,
+    prevIcon,
+    nextIcon,
     className,
     classes,
   } = props;
@@ -517,7 +453,7 @@ export function PersianDatePicker(props: PersianDatePickerProps) {
           }
           aria-label="Previous month"
         >
-          ‹
+          {prevIcon ?? "‹"}
         </button>
         <button
           type="button"
@@ -537,7 +473,7 @@ export function PersianDatePicker(props: PersianDatePickerProps) {
           }
           aria-label="Next month"
         >
-          ›
+          {nextIcon ?? "›"}
         </button>
       </div>
 
