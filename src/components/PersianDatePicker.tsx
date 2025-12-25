@@ -166,13 +166,15 @@ export function PersianDatePicker(props: PersianDatePickerProps) {
   const popoverOpts = popover ?? {};
   const usePortal = popoverOpts.portal ?? true;
   const { style: popoverStyle } = usePopoverPosition(
-    mode === "popover" && open && usePortal,
+    mode === "popover" && open,
     inputRef,
     popoverRef,
     {
       gutter: popoverOpts.gutter,
       padding: popoverOpts.padding,
-      strategy: popoverOpts.strategy,
+      // If we're not using a portal, `absolute` would require offset-parent math.
+      // Force `fixed` so we can clamp reliably to the viewport.
+      strategy: usePortal ? popoverOpts.strategy : "fixed",
       placements: popoverOpts.placements,
       align: popoverOpts.align ?? "end",
     }
@@ -673,6 +675,7 @@ export function PersianDatePicker(props: PersianDatePickerProps) {
           <div
             ref={popoverRef}
             className={cx("dvx-pdp__popover", classes?.popover)}
+            style={{ ...popoverStyle, right: "auto", bottom: "auto" }}
             role="dialog"
             aria-modal="false"
           >

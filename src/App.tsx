@@ -30,6 +30,9 @@ function App() {
   const minDate = useMemo(() => new Date(2020, 0, 1), []);
   const maxDate = useMemo(() => new Date(2030, 11, 31), []);
   const [edgeValue, setEdgeValue] = useState<Date | null>(new Date());
+  const [edgeValueNoPortal, setEdgeValueNoPortal] = useState<Date | null>(
+    new Date()
+  );
   const [showEdgeTest, setShowEdgeTest] = useState(false);
 
   return (
@@ -208,6 +211,54 @@ function App() {
             />
           </div>
         </section>
+      ) : null}
+
+      {showEdgeTest ? (
+        <div className="demo-edgeStage" aria-hidden="false">
+          <div className="demo-edgeStageCard">
+            <div className="demo-cardTitle" style={{ marginBottom: 8 }}>
+              <span>گوشه پایین راست</span>
+              <span className="demo-muted">portal: true</span>
+            </div>
+            <PersianDatePicker
+              value={edgeValue}
+              onChange={setEdgeValue}
+              placeholder="YYYY/MM/DD"
+              monthLabels={persianMonthLabels}
+              weekdays={["ش", "ی", "د", "س", "چ", "پ", "ج"]}
+              popover={{
+                portal: true,
+                padding: 8,
+                gutter: 8,
+                strategy: "fixed",
+                placements: ["bottom", "top", "left", "right"],
+                align: "end",
+              }}
+            />
+          </div>
+
+          <div className="demo-edgeStageCard">
+            <div className="demo-cardTitle" style={{ marginBottom: 8 }}>
+              <span>گوشه پایین چپ</span>
+              <span className="demo-muted">portal: false</span>
+            </div>
+            <PersianDatePicker
+              value={edgeValueNoPortal}
+              onChange={setEdgeValueNoPortal}
+              placeholder="YYYY/MM/DD"
+              monthLabels={persianMonthLabels}
+              weekdays={["ش", "ی", "د", "س", "چ", "پ", "ج"]}
+              popover={{
+                portal: false,
+                padding: 8,
+                gutter: 8,
+                strategy: "fixed",
+                placements: ["bottom", "top", "left", "right"],
+                align: "end",
+              }}
+            />
+          </div>
+        </div>
       ) : null}
     </div>
   );
