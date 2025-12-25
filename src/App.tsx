@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { PersianDatePicker } from "./components/PersianDatePicker";
 import { PersianDateRangePicker } from "./components/PersianDateRangePicker";
 import "./styles/base.css";
@@ -26,6 +26,12 @@ function App() {
     start: Date | null;
     end: Date | null;
   }>({ start: null, end: null });
+  const [modalOpen, setModalOpen] = useState(false);
+  const [modalValue, setModalValue] = useState<Date | null>(new Date());
+  const [modalRange, setModalRange] = useState<{
+    start: Date | null;
+    end: Date | null;
+  }>({ start: null, end: null });
 
   const minDate = useMemo(() => new Date(2020, 0, 1), []);
   const maxDate = useMemo(() => new Date(2030, 11, 31), []);
@@ -34,6 +40,15 @@ function App() {
     new Date()
   );
   const [showEdgeTest, setShowEdgeTest] = useState(false);
+
+  useEffect(() => {
+    if (!modalOpen) return;
+    const onKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Escape") setModalOpen(false);
+    };
+    document.addEventListener("keydown", onKeyDown);
+    return () => document.removeEventListener("keydown", onKeyDown);
+  }, [modalOpen]);
 
   return (
     <div className="demo-page" dir="rtl">
@@ -53,6 +68,13 @@ function App() {
               onClick={() => setShowEdgeTest((v) => !v)}
             >
               {showEdgeTest ? "بستن تست Edge" : "نمایش تست Edge"}
+            </button>
+            <button
+              type="button"
+              className="demo-button"
+              onClick={() => setModalOpen(true)}
+            >
+              تست داخل Modal
             </button>
           </div>
         </div>
@@ -257,6 +279,88 @@ function App() {
                 align: "end",
               }}
             />
+          </div>
+        </div>
+      ) : null}
+
+      {modalOpen ? (
+        <div
+          className="demo-modalOverlay"
+          role="dialog"
+          aria-modal="true"
+          onClick={() => setModalOpen(false)}
+        >
+          <div
+            className="demo-modal"
+            dir="rtl"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div className="demo-modalHeader">
+              <div>
+                <div style={{ fontWeight: 800 }}>نمونه استفاده داخل Modal</div>
+                <div className="demo-muted" style={{ marginTop: 2 }}>
+                  برای جلوگیری از clipping داخل کانتینرهای overflow، پیشنهاد:
+                  <code> portal: true </code>
+                </div>
+              </div>
+              <button
+                type="button"
+                className="demo-modalClose"
+                onClick={() => setModalOpen(false)}
+                aria-label="Close modal"
+              >
+                ×
+              </button>
+            </div>
+
+            <div className="demo-modalBody">
+              <div className="demo-row" style={{ justifyContent: "space-between" }}>
+                <div style={{ display: "grid", gap: 8 }}>
+                  <div className="demo-muted">Single</div>
+                  <PersianDatePicker
+                    value={modalValue}
+                    onChange={setModalValue}
+                    placeholder="YYYY/MM/DD"
+                    monthLabels={persianMonthLabels}
+                    weekdays={["ش", "ی", "د", "س", "چ", "پ", "ج"]}
+                    popover={{
+                      portal: true,
+                      padding: 8,
+                      gutter: 8,
+                      strategy: "fixed",
+                      placements: ["bottom", "top", "left", "right"],
+                      align: "end",
+                    }}
+                  />
+                </div>
+
+                <div style={{ display: "grid", gap: 8 }}>
+                  <div className="demo-muted">Range</div>
+                  <PersianDateRangePicker
+                    value={modalRange}
+                    onChange={setModalRange}
+                    placeholder="بازه (YYYY/MM/DD - YYYY/MM/DD)"
+                    inputVariant="single"
+                    monthLabels={persianMonthLabels}
+                    weekdays={["ش", "ی", "د", "س", "چ", "پ", "ج"]}
+                    popover={{
+                      portal: true,
+                      padding: 8,
+                      gutter: 8,
+                      strategy: "fixed",
+                      placements: ["bottom", "top", "left", "right"],
+                      align: "end",
+                    }}
+                  />
+                </div>
+              </div>
+
+              <pre className="demo-code">{`single: ${
+                modalValue ? modalValue.toISOString() : "null"
+              }\nrange:  ${modalRange.start ? modalRange.start.toISOString() : "null"} - ${
+                modalRange.end ? modalRange.end.toISOString() : "null"
+              }`}</pre>
+            </div>
           </div>
         </div>
       ) : null}
