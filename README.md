@@ -176,8 +176,4 @@ MIT © [Darvix](https://github.com/aliseyedabady/darvix-persian-date-kit)
 
 ---
 
-<div dir="rtl" align="right">
-
-**تقدیم به روح زیبای پدربزرگم** ❤️
-
-</div>
+_Dedicated to the beautiful soul of my grandfather_ ❤️
