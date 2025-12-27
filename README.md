@@ -135,64 +135,82 @@ All values you receive in `onChange` are **Gregorian** (`Date | null`). Jalali i
 
 ### `PersianDatePicker`
 
-#### Required props
-- **`value`**: `Date | null` — controlled value (Gregorian)
-- **`onChange`**: `(date: Date | null) => void` — controlled change handler
-
-#### Extra props (single picker)
-- **`placeholder?`**: `string` — input placeholder (popover mode)
-- **`classes?`**: `PersianDatePickerClasses` — per-slot class overrides
+| Prop | Type | Default | Description |
+|---|---|---:|---|
+| `value` | `Date \| null` | — | Controlled value (**Gregorian**) |
+| `onChange` | `(date: Date \| null) => void` | — | Called with the next value (**Gregorian**) |
+| `placeholder?` | `string` | `undefined` | Input placeholder (popover mode) |
+| `classes?` | `PersianDatePickerClasses` | `undefined` | Per-slot class overrides (see **Classes table** below) |
 
 ### `PersianDateRangePicker`
 
-#### Required props
-- **`value`**: `{ start: Date | null; end: Date | null }` — controlled range (Gregorian)
-- **`onChange`**: `(range: { start: Date | null; end: Date | null }) => void`
-
-#### Extra props (range picker)
-- **`inputVariant?`**: `'two' | 'single'` — two inputs (default) or one combined input
-- **`placeholder?`**: `string` — used for single-input mode
-- **`rangeSeparator?`**: `string` — separator for single-input text (default: `" - "`)
-- **`placeholderStart?` / `placeholderEnd?`**: `string` — used for two-input mode
-- **`classes?`**: `PersianDateRangePickerClasses` — per-slot class overrides
+| Prop | Type | Default | Description |
+|---|---|---:|---|
+| `value` | `{ start: Date \| null; end: Date \| null }` | — | Controlled range (**Gregorian**) |
+| `onChange` | `(range: { start: Date \| null; end: Date \| null }) => void` | — | Called with the next range (**Gregorian**) |
+| `inputVariant?` | `'two' \| 'single'` | `'two'` | Two inputs (start/end) or a single combined input |
+| `placeholder?` | `string` | `undefined` | Placeholder for **single** input mode |
+| `rangeSeparator?` | `string` | `" - "` | Separator used in single-input mode (`start{sep}end`) |
+| `placeholderStart?` | `string` | `undefined` | Placeholder for start input (two-input mode) |
+| `placeholderEnd?` | `string` | `undefined` | Placeholder for end input (two-input mode) |
+| `classes?` | `PersianDateRangePickerClasses` | `undefined` | Per-slot class overrides (see **Classes table** below) |
 
 ### Shared props (`BasePickerProps`)
 
 These props exist on both pickers:
 
-- **`minDate?` / `maxDate?`**: `Date` — limits selectable days (Gregorian)
-- **`disabled?`**: `boolean`
-- **`mode?`**: `'popover' | 'inline'` — default is `'popover'`
-- **`open?` / `onOpenChange?`**: control popover open state (only meaningful in popover mode)
-- **`popover?`**: `PopoverConfig` — positioning options (popover mode)
-- **`formatValue?`**: `(date: Date) => string` — formats input text (default: numeric Jalali `YYYY/MM/DD`)
-- **`parseValue?`**: `(text: string) => Date | null` — parses input text into Gregorian (default: numeric Jalali `YYYY/MM/DD`)
-- **`weekdays?`**: `string[]` — 7 labels for weekday header (if omitted, the picker uses numeric labels)
-- **`monthLabels?`**: `string[]` — 12 labels (index 0 => month 1). If omitted, month numbers are shown.
-- **`renderMonthLabel?`**: `(jy: number, jm: number) => React.ReactNode` — custom header label
-- **`prevIcon?` / `nextIcon?`**: `React.ReactNode` — customize navigation icons
-- **`className?`**: `string` — extra class on root
+| Prop | Type | Default | Description |
+|---|---|---:|---|
+| `minDate?` | `Date` | `undefined` | Minimum selectable day (**Gregorian**) |
+| `maxDate?` | `Date` | `undefined` | Maximum selectable day (**Gregorian**) |
+| `disabled?` | `boolean` | `false` | Disable interactions |
+| `mode?` | `'popover' \| 'inline'` | `'popover'` | `inline` shows calendar without input |
+| `open?` | `boolean` | `undefined` | Control popover open state (popover mode) |
+| `onOpenChange?` | `(open: boolean) => void` | `undefined` | Notified when open state changes (popover mode) |
+| `popover?` | `PopoverConfig` | `{ portal: true }` | Popover positioning options (popover mode) |
+| `formatValue?` | `(date: Date) => string` | built-in | Format input display (default: numeric Jalali `YYYY/MM/DD`) |
+| `parseValue?` | `(text: string) => Date \| null` | built-in | Parse user text into **Gregorian** (default: numeric Jalali `YYYY/MM/DD`) |
+| `weekdays?` | `string[]` | numeric | 7 weekday labels; if omitted, numeric labels are shown |
+| `monthLabels?` | `string[]` | numeric | 12 month labels (index 0 => month 1); if omitted, month numbers |
+| `renderMonthLabel?` | `(jy: number, jm: number) => React.ReactNode` | `undefined` | Custom header label renderer |
+| `prevIcon?` | `React.ReactNode` | `undefined` | Custom previous icon |
+| `nextIcon?` | `React.ReactNode` | `undefined` | Custom next icon |
+| `className?` | `string` | `undefined` | Extra class on the root element |
 
 ### `PopoverConfig`
 
-- **`portal?`**: `boolean` (default: `true`) — recommended inside modals / overflow containers
-- **`gutter?`**: `number` (default: `8`) — gap between anchor and popover
-- **`padding?`**: `number` (default: `8`) — minimum distance from viewport edges (clamping)
-- **`strategy?`**: `'fixed' | 'absolute'` (default: `'fixed'`)
-- **`placements?`**: `Array<'bottom' | 'top' | 'left' | 'right'>` (default: `['bottom','top','left','right']`)
-- **`align?`**: `'start' | 'center' | 'end'` (default: `'end'`)
+| Prop | Type | Default | Description |
+|---|---|---:|---|
+| `portal?` | `boolean` | `true` | Render popover in a portal (recommended for **modals/overflow** containers) |
+| `gutter?` | `number` | `8` | Gap between anchor and popover |
+| `padding?` | `number` | `8` | Minimum distance from viewport edges (clamping) |
+| `strategy?` | `'fixed' \| 'absolute'` | `'fixed'` | Positioning strategy |
+| `placements?` | `Array<'bottom' \| 'top' \| 'left' \| 'right'>` | `['bottom','top','left','right']` | Preferred placements order (auto-flip chooses best fit) |
+| `align?` | `'start' \| 'center' \| 'end'` | `'end'` | Cross-axis alignment |
 
 ### Styling slots (`classes`)
 
-You can override the class names per slot:
+You can override class names per slot:
 
-- **Base slots** (`BasePickerClasses`):
-  - `root`, `input`, `button`, `popover`, `header`, `navButton`, `monthLabel`, `grid`, `weekday`
-  - `day`, `dayOutside`, `dayDisabled`, `dayToday`
-- **Single picker extra slots** (`PersianDatePickerClasses`):
-  - `daySelected`
-- **Range picker extra slots** (`PersianDateRangePickerClasses`):
-  - `dayRangeStart`, `dayRangeEnd`, `dayInRange`
+| Slot | Used for |
+|---|---|
+| `root` | Root wrapper |
+| `input` | Input element |
+| `button` | Clear button (single picker) |
+| `popover` | Popover container |
+| `header` | Calendar header |
+| `navButton` | Navigation buttons (prev/next) |
+| `monthLabel` | Header month/year label button |
+| `grid` | Grid container |
+| `weekday` | Weekday header cell |
+| `day` | Day button |
+| `dayOutside` | Day that belongs to adjacent month |
+| `dayDisabled` | Disabled day |
+| `dayToday` | Today day |
+| `daySelected` | **Single picker** selected day |
+| `dayInRange` | **Range picker** day inside range |
+| `dayRangeStart` | **Range picker** range start day |
+| `dayRangeEnd` | **Range picker** range end day |
 
 ## Styling / Theming
 
@@ -208,15 +226,17 @@ The default CSS is built around **CSS variables**, so it’s easy to theme.
 
 These variables control most of the look:
 
-- `--dvx-pdp-bg`
-- `--dvx-pdp-fg`
-- `--dvx-pdp-muted`
-- `--dvx-pdp-border`
-- `--dvx-pdp-shadow`
-- `--dvx-pdp-accent`
-- `--dvx-pdp-accentFg`
-- `--dvx-pdp-ring`
-- `--dvx-pdp-dayHover`
+| CSS variable | Purpose | Default (light) |
+|---|---|---|
+| `--dvx-pdp-bg` | Surface background | `#ffffff` |
+| `--dvx-pdp-fg` | Main text | `#111827` |
+| `--dvx-pdp-muted` | Muted text | `#6b7280` |
+| `--dvx-pdp-border` | Borders | `#e5e7eb` |
+| `--dvx-pdp-shadow` | Popover shadow | `0 10px 20px rgba(0, 0, 0, 0.08)` |
+| `--dvx-pdp-accent` | Accent / selected | `#2563eb` |
+| `--dvx-pdp-accentFg` | Text on accent | `#ffffff` |
+| `--dvx-pdp-ring` | Focus ring | `rgba(37, 99, 235, 0.3)` |
+| `--dvx-pdp-dayHover` | Hover background | `rgba(37, 99, 235, 0.08)` |
 
 Example:
 
@@ -248,6 +268,15 @@ If you use Tailwind (or your own utility classes), pass overrides:
 If you **don’t** import `styles.css`, you should provide your own CSS for the
 component class hooks (ex: `.dvx-pdp`, `.dvx-pdp__input`, `.dvx-pdp__day`, ...),
 or rely entirely on `classes` and your own styles.
+
+### Styling approaches (summary table)
+
+| Approach | What you do | Best for |
+|---|---|---|
+| Default styles | Import `persian-date-kit/styles.css` | Fastest start, good baseline |
+| Theme variables | Override `--dvx-pdp-*` in your CSS | Brand theming without rewriting CSS |
+| `classes` overrides | Pass Tailwind/utility classes via `classes` | Integrate into your design system |
+| Full custom | Don’t import `styles.css`; write your own | Complete visual control |
 
 ## Development (this repo)
 

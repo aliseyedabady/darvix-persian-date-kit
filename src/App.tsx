@@ -54,7 +54,7 @@ function App() {
     <div className="demo-page" dir="rtl">
       <section className="demo-hero">
         <div className="demo-header">
-          <div>
+      <div>
             <h1 className="demo-title">persian-date-kit</h1>
             <p className="demo-subtitle">
               یک Date Picker حرفه‌ای برای ری‌اکت با نمایش جلالی و ذخیره‌سازی
@@ -310,7 +310,7 @@ function App() {
                 aria-label="Close modal"
               >
                 ×
-              </button>
+        </button>
             </div>
 
             <div className="demo-modalBody">
@@ -364,7 +364,7 @@ function App() {
           </div>
         </div>
       ) : null}
-    </div>
+      </div>
   );
 }
 

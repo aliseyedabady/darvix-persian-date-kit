@@ -671,34 +671,34 @@ export function PersianDateRangePicker(props: PersianDateRangePickerProps) {
             />
           ) : (
             <>
-              <input
-                ref={inputStartRef}
+          <input
+            ref={inputStartRef}
                 className={cx("dvx-pdp__input", classes?.input)}
-                disabled={disabled}
-                placeholder={placeholderStart}
-                inputMode="numeric"
-                autoComplete="off"
-                value={textStart}
-                onChange={(e) => setTextStart(e.target.value)}
+            disabled={disabled}
+            placeholder={placeholderStart}
+            inputMode="numeric"
+            autoComplete="off"
+            value={textStart}
+            onChange={(e) => setTextStart(e.target.value)}
                 onClick={() => openCalendar("start")}
                 onBlur={() => commitFieldText("start", textStart)}
-                aria-haspopup="dialog"
-                aria-expanded={open}
-              />
-              <input
-                ref={inputEndRef}
+            aria-haspopup="dialog"
+            aria-expanded={open}
+          />
+          <input
+            ref={inputEndRef}
                 className={cx("dvx-pdp__input", classes?.input)}
-                disabled={disabled}
-                placeholder={placeholderEnd}
-                inputMode="numeric"
-                autoComplete="off"
-                value={textEnd}
-                onChange={(e) => setTextEnd(e.target.value)}
+            disabled={disabled}
+            placeholder={placeholderEnd}
+            inputMode="numeric"
+            autoComplete="off"
+            value={textEnd}
+            onChange={(e) => setTextEnd(e.target.value)}
                 onClick={() => openCalendar("end")}
                 onBlur={() => commitFieldText("end", textEnd)}
-                aria-haspopup="dialog"
-                aria-expanded={open}
-              />
+            aria-haspopup="dialog"
+            aria-expanded={open}
+          />
             </>
           )}
         </div>
@@ -733,8 +733,8 @@ export function PersianDateRangePicker(props: PersianDateRangePickerProps) {
             role="dialog"
             aria-modal="false"
           >
-            {calendarUi}
-          </div>
+          {calendarUi}
+        </div>
         )
       ) : null}
     </div>
