@@ -6,6 +6,10 @@ Production-ready Persian (Jalali) date pickers for React.
 
 **Repository:** [https://github.com/aliseyedabady/darvix-persian-date-kit](https://github.com/aliseyedabady/darvix-persian-date-kit)
 
+## Demo
+
+![persian-date-kit demo](public/demo.webp)
+
 ## Key principles
 - **Gregorian-only internally**: component values are always `Date | null` (Gregorian). Jalali is only for display/input.
 - **Controlled components**: you own the state (`value` + `onChange`).
