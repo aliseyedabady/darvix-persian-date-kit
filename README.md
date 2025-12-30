@@ -319,4 +319,4 @@ MIT © [Darvix](https://github.com/aliseyedabady/darvix-persian-date-kit)
 
 ---
 
-_Dedicated to the beautiful soul of my grandfather_ ❤️
+_تقدیم به روح پاک پدربزرگ عزیزم_
