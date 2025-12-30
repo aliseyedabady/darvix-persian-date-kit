@@ -1,4 +1,9 @@
-:root {
+.dvx-pdp,
+.dvx-pdp__popover--portal {
+  position: relative;
+  display: inline-block;
+  direction: rtl;
+  /* Theme variables (default: light). */
   --dvx-pdp-bg: #ffffff;
   --dvx-pdp-fg: #111827;
   --dvx-pdp-muted: #6b7280;
@@ -8,10 +13,24 @@
   --dvx-pdp-accentFg: #ffffff;
   --dvx-pdp-ring: rgba(37, 99, 235, 0.3);
   --dvx-pdp-dayHover: rgba(37, 99, 235, 0.08);
+  color: var(--dvx-pdp-fg);
+  font: inherit;
+}
+
+.dvx-pdp--theme-dark {
+  --dvx-pdp-bg: #0b1220;
+  --dvx-pdp-fg: #e5e7eb;
+  --dvx-pdp-muted: #9ca3af;
+  --dvx-pdp-border: #243045;
+  --dvx-pdp-shadow: 0 10px 20px rgba(0, 0, 0, 0.35);
+  --dvx-pdp-accent: #60a5fa;
+  --dvx-pdp-accentFg: #0b1220;
+  --dvx-pdp-ring: rgba(96, 165, 250, 0.35);
+  --dvx-pdp-dayHover: rgba(96, 165, 250, 0.12);
 }
 
 @media (prefers-color-scheme: dark) {
-  :root {
+  .dvx-pdp--theme-auto {
     --dvx-pdp-bg: #0b1220;
     --dvx-pdp-fg: #e5e7eb;
     --dvx-pdp-muted: #9ca3af;
@@ -22,14 +41,6 @@
     --dvx-pdp-ring: rgba(96, 165, 250, 0.35);
     --dvx-pdp-dayHover: rgba(96, 165, 250, 0.12);
   }
-}
-
-.dvx-pdp {
-  position: relative;
-  display: inline-block;
-  direction: rtl;
-  color: var(--dvx-pdp-fg);
-  font: inherit;
 }
 
 .dvx-pdp--inline {

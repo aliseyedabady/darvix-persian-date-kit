@@ -20,6 +20,7 @@ const persianMonthLabels = [
 ];
 
 function App() {
+  const [theme, setTheme] = useState<"light" | "dark" | "auto">("light");
   const [value, setValue] = useState<Date | null>(new Date());
   const [inlineValue, setInlineValue] = useState<Date | null>(new Date());
   const [rangeValue, setRangeValue] = useState<{
@@ -54,7 +55,7 @@ function App() {
     <div className="demo-page" dir="rtl">
       <section className="demo-hero">
         <div className="demo-header">
-      <div>
+          <div>
             <h1 className="demo-title">persian-date-kit</h1>
             <p className="demo-subtitle">
               یک Date Picker حرفه‌ای برای ری‌اکت با نمایش جلالی و ذخیره‌سازی
@@ -62,6 +63,29 @@ function App() {
             </p>
           </div>
           <div className="demo-actions">
+            <div className="demo-row" style={{ gap: 6 }}>
+              <button
+                type="button"
+                className="demo-button"
+                onClick={() => setTheme("light")}
+              >
+                Theme: Light
+              </button>
+              <button
+                type="button"
+                className="demo-button"
+                onClick={() => setTheme("dark")}
+              >
+                Dark
+              </button>
+              <button
+                type="button"
+                className="demo-button"
+                onClick={() => setTheme("auto")}
+              >
+                Auto
+              </button>
+            </div>
             <button
               type="button"
               className="demo-button demo-buttonPrimary"
@@ -131,6 +155,7 @@ function App() {
           </div>
           <div className="demo-row">
             <PersianDatePicker
+              theme={theme}
               value={value}
               onChange={setValue}
               minDate={minDate}
@@ -158,6 +183,7 @@ function App() {
           </div>
           <PersianDatePicker
             mode="inline"
+            theme={theme}
             value={inlineValue}
             onChange={setInlineValue}
             monthLabels={persianMonthLabels}
@@ -173,6 +199,7 @@ function App() {
             <span className="demo-muted">start/end</span>
           </div>
           <PersianDateRangePicker
+            theme={theme}
             value={rangeValue}
             onChange={setRangeValue}
             monthLabels={persianMonthLabels}
@@ -196,6 +223,7 @@ function App() {
             <span className="demo-muted">disabled</span>
           </div>
           <PersianDatePicker
+            theme={theme}
             value={null}
             onChange={() => {}}
             disabled
@@ -217,6 +245,7 @@ function App() {
               رفتار clamp/flip را ببینی.
             </div>
             <PersianDatePicker
+              theme={theme}
               value={edgeValue}
               onChange={setEdgeValue}
               placeholder="YYYY/MM/DD"
@@ -243,6 +272,7 @@ function App() {
               <span className="demo-muted">portal: true</span>
             </div>
             <PersianDatePicker
+              theme={theme}
               value={edgeValue}
               onChange={setEdgeValue}
               placeholder="YYYY/MM/DD"
@@ -265,6 +295,7 @@ function App() {
               <span className="demo-muted">portal: false</span>
             </div>
             <PersianDatePicker
+              theme={theme}
               value={edgeValueNoPortal}
               onChange={setEdgeValueNoPortal}
               placeholder="YYYY/MM/DD"
@@ -310,14 +341,18 @@ function App() {
                 aria-label="Close modal"
               >
                 ×
-        </button>
+              </button>
             </div>
 
             <div className="demo-modalBody">
-              <div className="demo-row" style={{ justifyContent: "space-between" }}>
+              <div
+                className="demo-row"
+                style={{ justifyContent: "space-between" }}
+              >
                 <div style={{ display: "grid", gap: 8 }}>
                   <div className="demo-muted">Single</div>
                   <PersianDatePicker
+                    theme={theme}
                     value={modalValue}
                     onChange={setModalValue}
                     placeholder="YYYY/MM/DD"
@@ -337,6 +372,7 @@ function App() {
                 <div style={{ display: "grid", gap: 8 }}>
                   <div className="demo-muted">Range</div>
                   <PersianDateRangePicker
+                    theme={theme}
                     value={modalRange}
                     onChange={setModalRange}
                     placeholder="بازه (YYYY/MM/DD - YYYY/MM/DD)"
@@ -357,14 +393,16 @@ function App() {
 
               <pre className="demo-code">{`single: ${
                 modalValue ? modalValue.toISOString() : "null"
-              }\nrange:  ${modalRange.start ? modalRange.start.toISOString() : "null"} - ${
+              }\nrange:  ${
+                modalRange.start ? modalRange.start.toISOString() : "null"
+              } - ${
                 modalRange.end ? modalRange.end.toISOString() : "null"
               }`}</pre>
             </div>
           </div>
         </div>
       ) : null}
-      </div>
+    </div>
   );
 }
 

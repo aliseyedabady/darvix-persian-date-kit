@@ -1,5 +1,5 @@
 .demo-page {
-  max-width: 980px;
+  max-width: 1200px;
   margin: 0 auto;
   padding: 28px 16px 64px;
 }
@@ -16,18 +16,6 @@
   border: 1px solid rgba(0, 0, 0, 0.08);
   backdrop-filter: blur(8px);
   margin-bottom: 16px;
-}
-
-@media (prefers-color-scheme: dark) {
-  .demo-hero {
-    background: radial-gradient(
-        800px 220px at 100% 0%,
-        rgba(96, 165, 250, 0.18),
-        transparent 60%
-      ),
-      rgba(11, 18, 32, 0.7);
-    border-color: rgba(255, 255, 255, 0.10);
-  }
 }
 
 .demo-kpis {
@@ -48,13 +36,6 @@
   padding: 10px 12px;
   border: 1px solid rgba(0, 0, 0, 0.08);
   background: rgba(255, 255, 255, 0.55);
-}
-
-@media (prefers-color-scheme: dark) {
-  .demo-kpi {
-    border-color: rgba(255, 255, 255, 0.10);
-    background: rgba(11, 18, 32, 0.55);
-  }
 }
 
 .demo-kpiLabel {
@@ -106,22 +87,8 @@
 }
 
 .demo-buttonPrimary {
-  border-color: rgba(37, 99, 235, 0.30);
-  background: rgba(37, 99, 235, 0.10);
-}
-
-@media (prefers-color-scheme: dark) {
-  .demo-buttonPrimary {
-    border-color: rgba(96, 165, 250, 0.35);
-    background: rgba(96, 165, 250, 0.12);
-  }
-}
-
-@media (prefers-color-scheme: dark) {
-  .demo-button {
-    border-color: rgba(255, 255, 255, 0.15);
-    background: rgba(11, 18, 32, 0.65);
-  }
+  border-color: rgba(37, 99, 235, 0.3);
+  background: rgba(37, 99, 235, 0.1);
 }
 
 .demo-grid {
@@ -143,13 +110,6 @@
   background: rgba(255, 255, 255, 0.7);
   border: 1px solid rgba(0, 0, 0, 0.08);
   backdrop-filter: blur(8px);
-}
-
-@media (prefers-color-scheme: dark) {
-  .demo-card {
-    background: rgba(11, 18, 32, 0.7);
-    border-color: rgba(255, 255, 255, 0.10);
-  }
 }
 
 .demo-cardTitle {
@@ -180,16 +140,10 @@
   border-radius: 12px;
   background: rgba(15, 23, 42, 0.06);
   border: 1px solid rgba(15, 23, 42, 0.08);
-  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas,
+    "Liberation Mono", "Courier New", monospace;
   font-size: 12px;
   overflow: auto;
-}
-
-@media (prefers-color-scheme: dark) {
-  .demo-code {
-    background: rgba(229, 231, 235, 0.06);
-    border-color: rgba(229, 231, 235, 0.10);
-  }
 }
 
 .demo-edgeBox {
@@ -199,12 +153,6 @@
   padding: 12px;
   display: grid;
   gap: 10px;
-}
-
-@media (prefers-color-scheme: dark) {
-  .demo-edgeBox {
-    border-color: rgba(255, 255, 255, 0.25);
-  }
 }
 
 .demo-edgeStage {
@@ -227,15 +175,8 @@
   border-radius: 16px;
   padding: 12px;
   background: rgba(255, 255, 255, 0.82);
-  border: 1px solid rgba(0, 0, 0, 0.10);
+  border: 1px solid rgba(0, 0, 0, 0.1);
   backdrop-filter: blur(8px);
-}
-
-@media (prefers-color-scheme: dark) {
-  .demo-edgeStageCard {
-    background: rgba(11, 18, 32, 0.82);
-    border-color: rgba(255, 255, 255, 0.12);
-  }
 }
 
 .demo-modalOverlay {
@@ -260,13 +201,6 @@
   z-index: 9001;
 }
 
-@media (prefers-color-scheme: dark) {
-  .demo-modal {
-    background: rgba(11, 18, 32, 0.92);
-    border-color: rgba(255, 255, 255, 0.12);
-  }
-}
-
 .demo-modalHeader {
   display: flex;
   justify-content: space-between;
@@ -287,16 +221,7 @@
   line-height: 1;
 }
 
-@media (prefers-color-scheme: dark) {
-  .demo-modalClose {
-    border-color: rgba(255, 255, 255, 0.15);
-    background: rgba(11, 18, 32, 0.65);
-  }
-}
-
 .demo-modalBody {
   display: grid;
   gap: 12px;
 }
-
-

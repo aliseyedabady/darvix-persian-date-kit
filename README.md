@@ -169,6 +169,7 @@ These props exist on both pickers:
 | `maxDate?` | `Date` | `undefined` | Maximum selectable day (**Gregorian**) |
 | `disabled?` | `boolean` | `false` | Disable interactions |
 | `mode?` | `'popover' \| 'inline'` | `'popover'` | `inline` shows calendar without input |
+| `theme?` | `'light' \| 'dark' \| 'auto'` | `'light'` | Default stylesheet theme (`auto` follows `prefers-color-scheme`) |
 | `open?` | `boolean` | `undefined` | Control popover open state (popover mode) |
 | `onOpenChange?` | `(open: boolean) => void` | `undefined` | Notified when open state changes (popover mode) |
 | `popover?` | `PopoverConfig` | `{ portal: true }` | Popover positioning options (popover mode) |
@@ -245,10 +246,14 @@ These variables control most of the look:
 Example:
 
 ```css
-:root {
+.myPicker {
   --dvx-pdp-accent: #16a34a;
   --dvx-pdp-ring: rgba(22, 163, 74, 0.25);
 }
+```
+
+```tsx
+<PersianDatePicker className="myPicker" theme="light" value={value} onChange={setValue} />
 ```
 
 ### 3) Override per-slot classes (`classes` prop)

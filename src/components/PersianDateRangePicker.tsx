@@ -91,6 +91,7 @@ export function PersianDateRangePicker(props: PersianDateRangePickerProps) {
     open: openProp,
     onOpenChange,
     mode = "popover",
+    theme = "light",
     popover,
     formatValue = defaultFormatValue,
     parseValue = defaultParseValue,
@@ -102,6 +103,13 @@ export function PersianDateRangePicker(props: PersianDateRangePickerProps) {
     className,
     classes,
   } = props;
+
+  const themeClass =
+    theme === "dark"
+      ? "dvx-pdp--theme-dark"
+      : theme === "auto"
+      ? "dvx-pdp--theme-auto"
+      : undefined;
 
   const rootRef = React.useRef<HTMLDivElement | null>(null);
   const popoverRef = React.useRef<HTMLDivElement | null>(null);
@@ -646,6 +654,7 @@ export function PersianDateRangePicker(props: PersianDateRangePickerProps) {
       ref={rootRef}
       className={cx(
         "dvx-pdp",
+        themeClass,
         mode === "inline" && "dvx-pdp--inline",
         className,
         classes?.root
@@ -712,8 +721,10 @@ export function PersianDateRangePicker(props: PersianDateRangePickerProps) {
             <div
               ref={popoverRef}
               className={cx(
+                "dvx-pdp",
                 "dvx-pdp__popover",
                 "dvx-pdp__popover--portal",
+                themeClass,
                 classes?.popover
               )}
               dir="rtl"

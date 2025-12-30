@@ -63,6 +63,15 @@ export type BasePickerProps = {
    */
   mode?: 'popover' | 'inline'
   /**
+   * Theme mode for default stylesheet (default: `'light'`).
+   * - `light`: force light theme regardless of OS color scheme
+   * - `dark`: force dark theme regardless of OS color scheme
+   * - `auto`: follow `prefers-color-scheme`
+   *
+   * Note: this only affects the bundled `styles.css` variables/classes.
+   */
+  theme?: 'light' | 'dark' | 'auto'
+  /**
    * Popover positioning options (popover mode only).
    */
   popover?: PopoverConfig
