@@ -1,6 +1,6 @@
 {
   "name": "persian-date-kit",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Production-ready Persian (Jalali) date pickers for React with Gregorian-only values.",
   "keywords": [
     "react",
