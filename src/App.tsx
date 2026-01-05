@@ -41,6 +41,9 @@ function App() {
     new Date()
   );
   const [showEdgeTest, setShowEdgeTest] = useState(false);
+  const [timeValue, setTimeValue] = useState<Date | null>(new Date());
+  const [timeValueWithSeconds, setTimeValueWithSeconds] = useState<Date | null>(new Date());
+  const [timeValueCustom, setTimeValueCustom] = useState<Date | null>(new Date());
 
   useEffect(() => {
     if (!modalOpen) return;
@@ -230,6 +233,97 @@ function App() {
             placeholder="Disabled"
             monthLabels={persianMonthLabels}
           />
+        </section>
+
+        <section className="demo-card">
+          <div className="demo-cardTitle">
+            <span>تاریخ + زمان (Time Picker)</span>
+            <span className="demo-muted">timePicker enabled</span>
+          </div>
+          <div className="demo-row">
+            <PersianDatePicker
+              theme={theme}
+              value={timeValue}
+              onChange={setTimeValue}
+              placeholder="YYYY/MM/DD HH:mm"
+              monthLabels={persianMonthLabels}
+              weekdays={["ش", "ی", "د", "س", "چ", "پ", "ج"]}
+              timePicker={true}
+              popover={{
+                portal: true,
+                padding: 8,
+                gutter: 8,
+                strategy: "fixed",
+              }}
+            />
+          </div>
+          <pre className="demo-code">{`Gregorian: ${
+            timeValue ? timeValue.toISOString() : "null"
+          }`}</pre>
+        </section>
+
+        <section className="demo-card">
+          <div className="demo-cardTitle">
+            <span>تاریخ + زمان (با ثانیه)</span>
+            <span className="demo-muted">HH:mm:ss format</span>
+          </div>
+          <div className="demo-row">
+            <PersianDatePicker
+              theme={theme}
+              value={timeValueWithSeconds}
+              onChange={setTimeValueWithSeconds}
+              placeholder="YYYY/MM/DD HH:mm:ss"
+              monthLabels={persianMonthLabels}
+              weekdays={["ش", "ی", "د", "س", "چ", "پ", "ج"]}
+              timePicker={{
+                enabled: true,
+                format: 'HH:mm:ss',
+                showSeconds: true,
+              }}
+              popover={{
+                portal: true,
+                padding: 8,
+                gutter: 8,
+                strategy: "fixed",
+              }}
+            />
+          </div>
+          <pre className="demo-code">{`Gregorian: ${
+            timeValueWithSeconds ? timeValueWithSeconds.toISOString() : "null"
+          }`}</pre>
+        </section>
+
+        <section className="demo-card">
+          <div className="demo-cardTitle">
+            <span>تاریخ + زمان (سفارشی)</span>
+            <span className="demo-muted">custom steps & defaultTime</span>
+          </div>
+          <div className="demo-row">
+            <PersianDatePicker
+              theme={theme}
+              value={timeValueCustom}
+              onChange={setTimeValueCustom}
+              placeholder="YYYY/MM/DD HH:mm"
+              monthLabels={persianMonthLabels}
+              weekdays={["ش", "ی", "د", "س", "چ", "پ", "ج"]}
+              timePicker={{
+                enabled: true,
+                format: 'HH:mm',
+                defaultTime: { hour: 12, minute: 0 },
+                hourStep: 1,
+                minuteStep: 5,
+              }}
+              popover={{
+                portal: true,
+                padding: 8,
+                gutter: 8,
+                strategy: "fixed",
+              }}
+            />
+          </div>
+          <pre className="demo-code">{`Gregorian: ${
+            timeValueCustom ? timeValueCustom.toISOString() : "null"
+          }`}</pre>
         </section>
       </div>
 
