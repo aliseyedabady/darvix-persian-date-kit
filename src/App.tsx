@@ -44,6 +44,7 @@ function App() {
   const [timeValue, setTimeValue] = useState<Date | null>(new Date());
   const [timeValueWithSeconds, setTimeValueWithSeconds] = useState<Date | null>(new Date());
   const [timeValueCustom, setTimeValueCustom] = useState<Date | null>(new Date());
+  const [multipleDates, setMultipleDates] = useState<Date[]>([]);
 
   useEffect(() => {
     if (!modalOpen) return;
@@ -233,6 +234,33 @@ function App() {
             placeholder="Disabled"
             monthLabels={persianMonthLabels}
           />
+        </section>
+
+        <section className="demo-card">
+          <div className="demo-cardTitle">
+            <span>انتخاب چندتایی (Multiple Selection)</span>
+            <span className="demo-muted">multiple dates</span>
+          </div>
+          <div className="demo-row">
+            <PersianDatePicker
+              theme={theme}
+              value={multipleDates}
+              onChange={setMultipleDates}
+              multiple={true}
+              maxSelections={5}
+              placeholder="انتخاب چند تاریخ"
+              monthLabels={persianMonthLabels}
+              weekdays={["ش", "ی", "د", "س", "چ", "پ", "ج"]}
+              popover={{
+                portal: true,
+                padding: 8,
+                gutter: 8,
+                strategy: "fixed",
+              }}
+            />
+          </div>
+          <pre className="demo-code">{`Selected: ${multipleDates.length} date(s)
+${multipleDates.map(d => d.toISOString()).join('\n')}`}</pre>
         </section>
 
         <section className="demo-card">

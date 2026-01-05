@@ -24,9 +24,11 @@ export type PersianDatePickerClasses = Partial<
 >;
 
 export type PersianDatePickerProps = BasePickerProps & {
-  value: Date | null;
-  onChange: (date: Date | null) => void;
+  value: Date | null | Date[];
+  onChange: (date: Date | null | Date[]) => void;
   placeholder?: string;
+  multiple?: boolean;
+  maxSelections?: number;
   timePicker?: TimePickerConfig;
   classes?: PersianDatePickerClasses;
 };
@@ -86,6 +88,8 @@ export function PersianDatePicker(props: PersianDatePickerProps) {
     mode = "popover",
     theme = "light",
     popover,
+    multiple = false,
+    maxSelections,
     timePicker,
     formatValue,
     parseValue,
@@ -98,13 +102,17 @@ export function PersianDatePicker(props: PersianDatePickerProps) {
     classes,
   } = props;
 
+  // Disable time picker in multiple mode
+  const effectiveTimePicker = multiple ? undefined : timePicker;
+
   // Normalize timePicker config
   const timeConfig = React.useMemo(() => {
-    if (typeof timePicker === 'boolean') {
-      return timePicker ? { enabled: true } : { enabled: false };
+    if (multiple) return { enabled: false };
+    if (typeof effectiveTimePicker === 'boolean') {
+      return effectiveTimePicker ? { enabled: true } : { enabled: false };
     }
-    return timePicker ?? { enabled: false };
-  }, [timePicker]);
+    return effectiveTimePicker ?? { enabled: false };
+  }, [effectiveTimePicker, multiple]);
 
   // Create formatValue and parseValue with timeConfig
   const effectiveFormatValue = React.useCallback(
@@ -157,35 +165,59 @@ export function PersianDatePicker(props: PersianDatePickerProps) {
     setMounted(true);
   }, []);
 
+  const getInitialDate = React.useCallback(() => {
+    if (multiple) {
+      return Array.isArray(value) && value.length > 0 ? value[0] : getToday();
+    }
+    return (value as Date | null) ?? getToday();
+  }, [value, multiple]);
+
   const [viewMonth, setViewMonth] = React.useState(() =>
-    getInitialViewMonth(value)
+    getInitialViewMonth(getInitialDate())
   );
   const [focusedDate, setFocusedDate] = React.useState<Date>(() => {
-    const base = value ?? getToday();
-    return base;
+    return getInitialDate();
   });
+  // Format value for display
+  const formatValueForDisplay = React.useCallback((val: Date | null | Date[]) => {
+    if (multiple) {
+      const dates = Array.isArray(val) ? val : [];
+      if (dates.length === 0) return "";
+      if (dates.length === 1) return effectiveFormatValue(dates[0]);
+      if (dates.length <= 3) {
+        return dates.map(d => effectiveFormatValue(d)).join(", ");
+      }
+      return `${dates.length} روز انتخاب شده`;
+    }
+    return val ? effectiveFormatValue(val as Date) : "";
+  }, [multiple, effectiveFormatValue]);
+
   const [text, setText] = React.useState<string>(() =>
-    value ? effectiveFormatValue(value) : ""
+    formatValueForDisplay(value)
   );
   const [panel, setPanel] = React.useState<"days" | "years" | "months">("days");
   const [yearPageStart, setYearPageStart] = React.useState(() => {
-    const jy = getInitialViewMonth(value).jy;
+    const jy = getInitialViewMonth(getInitialDate()).jy;
     return jy - (jy % 12);
   });
   const [pendingYear, setPendingYear] = React.useState<number>(
-    () => getInitialViewMonth(value).jy
+    () => getInitialViewMonth(getInitialDate()).jy
   );
 
   // Keep input text in sync with controlled value (unless the user is actively editing).
   React.useEffect(() => {
     if (isEditingRef.current) return;
-    setText(value ? effectiveFormatValue(value) : "");
-    setViewMonth(getInitialViewMonth(value));
-    setFocusedDate(value ?? getToday());
-    const jy = getInitialViewMonth(value).jy;
+    setText(formatValueForDisplay(value));
+    // For multiple mode, use first date or today for view month
+    const anchorDate = multiple
+      ? (Array.isArray(value) && value.length > 0 ? value[0] : getToday())
+      : (value as Date | null) ?? getToday();
+    setViewMonth(getInitialViewMonth(anchorDate));
+    setFocusedDate(anchorDate);
+    const jy = getInitialViewMonth(anchorDate).jy;
     setPendingYear(jy);
     setYearPageStart(jy - (jy % 12));
-  }, [value, effectiveFormatValue]);
+  }, [value, formatValueForDisplay, multiple]);
 
   // Close on outside click (SSR-safe because effect only runs on client).
   React.useEffect(() => {
@@ -250,7 +282,15 @@ export function PersianDatePicker(props: PersianDatePickerProps) {
     [viewMonth.jm, viewMonth.jy]
   );
 
-  const selected = value ?? null;
+  // Normalize value for single/multiple mode
+  const selectedDates = React.useMemo((): Date[] => {
+    if (multiple) {
+      return Array.isArray(value) ? value : [];
+    }
+    return value ? [value as Date] : [];
+  }, [value, multiple]);
+
+  const selected = multiple ? null : (value as Date | null) ?? null;
   const today = React.useMemo(() => getToday(), []);
 
   function setViewByAnchor(anchor: Date) {
@@ -261,7 +301,9 @@ export function PersianDatePicker(props: PersianDatePickerProps) {
   function openCalendar() {
     if (disabled) return;
     setOpen(true);
-    const anchor = selected ?? focusedDate ?? today;
+    const anchor = multiple
+      ? (selectedDates.length > 0 ? selectedDates[0] : focusedDate ?? today)
+      : (selected ?? focusedDate ?? today);
     setViewByAnchor(anchor);
     setPanel("days");
     const jy = toJalaliParts(anchor).jy;
@@ -276,6 +318,12 @@ export function PersianDatePicker(props: PersianDatePickerProps) {
   }
 
   function commitFromText(nextText: string) {
+    // In multiple mode, don't allow text input (only calendar selection)
+    if (multiple) {
+      setText(formatValueForDisplay(value));
+      return;
+    }
+
     const trimmed = nextText.trim();
     if (!trimmed) {
       // If time is enabled, we should set a date with default time instead of null
@@ -292,13 +340,13 @@ export function PersianDatePicker(props: PersianDatePickerProps) {
     const parsed = effectiveParseValue(trimmed);
     if (!parsed) {
       // Invalid: revert to controlled value on blur.
-      setText(selected ? effectiveFormatValue(selected) : trimmed);
+      setText(selected ? effectiveFormatValue(selected as Date) : trimmed);
       return;
     }
 
     const next = normalizeInputValue(parsed, minDate, maxDate);
     if (!next) {
-      setText(selected ? effectiveFormatValue(selected) : trimmed);
+      setText(selected ? effectiveFormatValue(selected as Date) : trimmed);
       return;
     }
 
@@ -371,19 +419,43 @@ export function PersianDatePicker(props: PersianDatePickerProps) {
       navigateMonth(1);
       return;
     }
-    if (e.key === "Enter") {
+    if (e.key === "Enter" || e.key === " ") {
       e.preventDefault();
       if (!isWithinRange(focusedDate, minDate, maxDate)) return;
-      // If time is enabled and we have a current value, preserve its time
-      let dateToSet = focusedDate;
-      if (timeConfig.enabled && value) {
-        dateToSet = setTime(focusedDate, value.getHours(), value.getMinutes(), value.getSeconds());
-      } else if (timeConfig.enabled && timeConfig.defaultTime) {
-        dateToSet = setTime(focusedDate, timeConfig.defaultTime.hour, timeConfig.defaultTime.minute, timeConfig.defaultTime.second);
+      
+      if (multiple) {
+        // Toggle selection in multiple mode
+        const currentDates = selectedDates;
+        const isSelected = currentDates.some(d => isSameDay(d, focusedDate));
+        
+        if (isSelected) {
+          // Remove from selection
+          const newDates = currentDates.filter((d): d is Date => !isSameDay(d, focusedDate));
+          onChange(newDates as Date | null | Date[]);
+          setText(formatValueForDisplay(newDates));
+        } else {
+          // Add to selection (check maxSelections limit)
+          if (maxSelections && currentDates.length >= maxSelections) {
+            return; // Don't add if limit reached
+          }
+          const newDates = [...currentDates, focusedDate].sort((a, b) => a.getTime() - b.getTime());
+          onChange(newDates as Date | null | Date[]);
+          setText(formatValueForDisplay(newDates));
+        }
+        // Don't close calendar in multiple mode
+      } else {
+        // Single selection mode
+        let dateToSet = focusedDate;
+        const singleValue = value as Date | null;
+        if (timeConfig.enabled && singleValue) {
+          dateToSet = setTime(focusedDate, singleValue.getHours(), singleValue.getMinutes(), singleValue.getSeconds());
+        } else if (timeConfig.enabled && timeConfig.defaultTime) {
+          dateToSet = setTime(focusedDate, timeConfig.defaultTime.hour, timeConfig.defaultTime.minute, timeConfig.defaultTime.second);
+        }
+        onChange(dateToSet);
+        setText(effectiveFormatValue(dateToSet));
+        closeCalendar();
       }
-      onChange(dateToSet);
-      setText(effectiveFormatValue(dateToSet));
-      closeCalendar();
     }
   }
 
@@ -400,18 +472,43 @@ export function PersianDatePicker(props: PersianDatePickerProps) {
   function selectCell(cell: CalendarDayCell) {
     if (disabled) return;
     if (!isWithinRange(cell.gregorian, minDate, maxDate)) return;
-    // If time is enabled and we have a current value, preserve its time
-    let dateToSet = cell.gregorian;
-    if (timeConfig.enabled && value) {
-      dateToSet = setTime(cell.gregorian, value.getHours(), value.getMinutes(), value.getSeconds());
-    } else if (timeConfig.enabled && timeConfig.defaultTime) {
-      dateToSet = setTime(cell.gregorian, timeConfig.defaultTime.hour, timeConfig.defaultTime.minute, timeConfig.defaultTime.second);
+    
+    if (multiple) {
+      // Toggle selection in multiple mode
+      const currentDates = selectedDates;
+      const isSelected = currentDates.some(d => isSameDay(d, cell.gregorian));
+      
+      if (isSelected) {
+        // Remove from selection
+        const newDates = currentDates.filter((d): d is Date => !isSameDay(d, cell.gregorian));
+        onChange(newDates as Date | null | Date[]);
+        setText(formatValueForDisplay(newDates));
+      } else {
+        // Add to selection (check maxSelections limit)
+        if (maxSelections && currentDates.length >= maxSelections) {
+          return; // Don't add if limit reached
+        }
+        const newDates = [...currentDates, cell.gregorian].sort((a, b) => a.getTime() - b.getTime());
+        onChange(newDates as Date | null | Date[]);
+        setText(formatValueForDisplay(newDates));
+      }
+      setFocusedDate(cell.gregorian);
+      // Don't close calendar in multiple mode
+    } else {
+      // Single selection mode
+      let dateToSet = cell.gregorian;
+      const singleValue = value as Date | null;
+      if (timeConfig.enabled && singleValue) {
+        dateToSet = setTime(cell.gregorian, singleValue.getHours(), singleValue.getMinutes(), singleValue.getSeconds());
+      } else if (timeConfig.enabled && timeConfig.defaultTime) {
+        dateToSet = setTime(cell.gregorian, timeConfig.defaultTime.hour, timeConfig.defaultTime.minute, timeConfig.defaultTime.second);
+      }
+      onChange(dateToSet);
+      setText(effectiveFormatValue(dateToSet));
+      setFocusedDate(dateToSet);
+      setOpen(false);
+      inputRef.current?.focus();
     }
-    onChange(dateToSet);
-    setText(effectiveFormatValue(dateToSet));
-    setFocusedDate(dateToSet);
-    setOpen(false);
-    inputRef.current?.focus();
   }
 
   function isCellDisabled(cell: CalendarDayCell) {
@@ -567,13 +664,15 @@ export function PersianDatePicker(props: PersianDatePickerProps) {
             <div className="dvx-pdp__days">
               {grid.map((row, r) => (
                 <div className="dvx-pdp__row" key={r}>
-                  {row.map((cell) => {
-                    const cellDisabled = isCellDisabled(cell);
-                    const isSelected = selected
-                      ? isSameDay(cell.gregorian, selected)
-                      : false;
-                    const isToday = isSameDay(cell.gregorian, today);
-                    const isFocused = isSameDay(cell.gregorian, focusedDate);
+                {row.map((cell) => {
+                  const cellDisabled = isCellDisabled(cell);
+                  const isSelected = multiple
+                    ? selectedDates.some(d => isSameDay(cell.gregorian, d))
+                    : selected
+                    ? isSameDay(cell.gregorian, selected)
+                    : false;
+                  const isToday = isSameDay(cell.gregorian, today);
+                  const isFocused = isSameDay(cell.gregorian, focusedDate);
 
                     return (
                       <button
@@ -608,9 +707,10 @@ export function PersianDatePicker(props: PersianDatePickerProps) {
               ))}
             </div>
           </div>
-          {timeConfig.enabled && (() => {
-            // Ensure we have a date value for TimePicker
-            const timePickerValue = value ?? (() => {
+          {timeConfig.enabled && !multiple && (() => {
+            // Ensure we have a date value for TimePicker (only in single mode)
+            const singleValue = value as Date | null;
+            const timePickerValue = singleValue ?? (() => {
               const today = new Date();
               if (timeConfig.defaultTime) {
                 return setTime(today, timeConfig.defaultTime.hour, timeConfig.defaultTime.minute, timeConfig.defaultTime.second);
@@ -721,20 +821,25 @@ export function PersianDatePicker(props: PersianDatePickerProps) {
             ref={inputRef}
             className={cx("dvx-pdp__input", classes?.input)}
             disabled={disabled}
+            readOnly={multiple}
             placeholder={placeholder}
-            inputMode="numeric"
+            inputMode={multiple ? undefined : "numeric"}
             autoComplete="off"
             value={text}
-            onChange={(e) => setText(e.target.value)}
+            onChange={(e) => {
+              if (!multiple) setText(e.target.value);
+            }}
             onClick={() => {
               if (!open) openCalendar();
             }}
             onFocus={() => {
-              isEditingRef.current = true;
+              if (!multiple) isEditingRef.current = true;
             }}
             onBlur={() => {
-              isEditingRef.current = false;
-              commitFromText(text);
+              if (!multiple) {
+                isEditingRef.current = false;
+                commitFromText(text);
+              }
             }}
             onKeyDown={onInputKeyDown}
             aria-haspopup="dialog"

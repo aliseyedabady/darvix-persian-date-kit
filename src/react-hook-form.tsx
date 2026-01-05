@@ -3,7 +3,7 @@ import type { Control, FieldValues, Path, RegisterOptions } from 'react-hook-for
 import { useController } from 'react-hook-form'
 import { PersianDatePicker, type PersianDatePickerProps } from './components/PersianDatePicker'
 
-export type RHFDateValue = Date | null
+export type RHFDateValue = Date | null | Date[]
 
 export type UsePersianDatePickerControllerParams<TFieldValues extends FieldValues> = {
   name: Path<TFieldValues>
@@ -35,8 +35,8 @@ export function usePersianDatePickerController<TFieldValues extends FieldValues>
   const value = (field.value ?? null) as RHFDateValue
 
   const onChange = React.useCallback(
-    (date: RHFDateValue) => {
-      field.onChange(date)
+    (date: Date | null | Date[]) => {
+      field.onChange(date as never)
     },
     [field],
   )
