@@ -107,6 +107,56 @@ export function RangeExample() {
 }
 ```
 
+### Date picker with time
+
+```tsx
+import { useState } from 'react'
+import { PersianDatePicker } from 'persian-date-kit'
+
+export function DateTimeExample() {
+  const [value, setValue] = useState<Date | null>(new Date())
+
+  return (
+    <PersianDatePicker
+      value={value}
+      onChange={setValue}
+      placeholder="YYYY/MM/DD HH:mm"
+      timePicker={{
+        enabled: true,
+        format: 'HH:mm',
+        defaultTime: { hour: 12, minute: 0 },
+        hourStep: 1,
+        minuteStep: 5,
+      }}
+    />
+  )
+}
+```
+
+Or simply enable with defaults:
+
+```tsx
+<PersianDatePicker
+  value={value}
+  onChange={setValue}
+  timePicker={true}  // Uses default time 00:00
+/>
+```
+
+With seconds:
+
+```tsx
+<PersianDatePicker
+  value={value}
+  onChange={setValue}
+  timePicker={{
+    enabled: true,
+    format: 'HH:mm:ss',
+    showSeconds: true,
+  }}
+/>
+```
+
 ## React Hook Form (optional adapter)
 The core package has **no required** form dependency.
 If you want React Hook Form integration, import from the subpath:
@@ -144,6 +194,7 @@ All values you receive in `onChange` are **Gregorian** (`Date | null`). Jalali i
 | `value` | `Date \| null` | — | Controlled value (**Gregorian**) |
 | `onChange` | `(date: Date \| null) => void` | — | Called with the next value (**Gregorian**) |
 | `placeholder?` | `string` | `undefined` | Input placeholder (popover mode) |
+| `timePicker?` | `TimePickerConfig \| boolean` | `undefined` | Enable time picker (see **TimePickerConfig** below) |
 | `classes?` | `PersianDatePickerClasses` | `undefined` | Per-slot class overrides (see **Classes table** below) |
 
 ### `PersianDateRangePicker`
@@ -182,6 +233,20 @@ These props exist on both pickers:
 | `nextIcon?` | `React.ReactNode` | `undefined` | Custom next icon |
 | `className?` | `string` | `undefined` | Extra class on the root element |
 
+### `TimePickerConfig`
+
+| Prop | Type | Default | Description |
+|---|---|---:|---|
+| `enabled` | `boolean` | — | Enable time picker |
+| `format?` | `'HH:mm' \| 'HH:mm:ss'` | `'HH:mm'` | Time format |
+| `defaultTime?` | `{ hour: number; minute: number; second?: number }` | `undefined` | Default time when value is null (uses current time if not provided) |
+| `showSeconds?` | `boolean` | `false` | Show seconds stepper (requires `format: 'HH:mm:ss'`) |
+| `hourStep?` | `number` | `1` | Step size for hour increment/decrement |
+| `minuteStep?` | `number` | `1` | Step size for minute increment/decrement |
+| `secondStep?` | `number` | `1` | Step size for second increment/decrement |
+
+**Note:** You can also pass `timePicker={true}` as a shorthand to enable with defaults.
+
 ### `PopoverConfig`
 
 | Prop | Type | Default | Description |
@@ -216,6 +281,11 @@ You can override class names per slot:
 | `dayInRange` | **Range picker** day inside range |
 | `dayRangeStart` | **Range picker** range start day |
 | `dayRangeEnd` | **Range picker** range end day |
+| `timePicker` | Time picker container |
+| `timeStepper` | Time stepper wrapper (hour/minute/second) |
+| `timeStepperButton` | Stepper increment/decrement buttons |
+| `timeStepperInput` | Time input field |
+| `timeSeparator` | Time separator (`:`) |
 
 ## Styling / Theming
 
