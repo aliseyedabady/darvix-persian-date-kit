@@ -307,6 +307,15 @@
   background: var(--dvx-pdp-bg);
   color: var(--dvx-pdp-fg);
   outline: none;
+  /* Remove default number input arrows */
+  appearance: textfield;
+  -moz-appearance: textfield;
+}
+
+.dvx-pdp__timeStepperInput::-webkit-outer-spin-button,
+.dvx-pdp__timeStepperInput::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
 }
 
 .dvx-pdp__timeStepperInput:focus {
