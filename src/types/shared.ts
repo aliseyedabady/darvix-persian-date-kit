@@ -112,6 +112,32 @@ export type BasePickerProps = {
 }
 
 /**
+ * Time picker configuration.
+ */
+export type TimePickerConfig = {
+  enabled: boolean
+  format?: 'HH:mm' | 'HH:mm:ss'
+  defaultTime?: { hour: number; minute: number; second?: number }
+  showSeconds?: boolean
+  hourStep?: number
+  minuteStep?: number
+  secondStep?: number
+} | boolean // برای backward compatibility
+
+/**
+ * Time picker classes structure for styling customization.
+ */
+export type TimePickerClasses = {
+  root?: string
+  stepper?: string
+  stepperButton?: string
+  stepperButtonUp?: string
+  stepperButtonDown?: string
+  stepperInput?: string
+  separator?: string
+}
+
+/**
  * Base classes structure for styling customization.
  */
 export type BasePickerClasses = {
@@ -128,5 +154,10 @@ export type BasePickerClasses = {
   dayOutside?: string
   dayDisabled?: string
   dayToday?: string
+  timePicker?: string
+  timeStepper?: string
+  timeStepperButton?: string
+  timeStepperInput?: string
+  timeSeparator?: string
 }
 

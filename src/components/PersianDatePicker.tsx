@@ -1,7 +1,7 @@
 import * as React from "react";
 import { createPortal } from "react-dom";
-import { toJalali } from "../utils/toJalali";
-import { parseJalaliText } from "../utils/toGregorian";
+import { toJalali, formatJalaliWithTime } from "../utils/toJalali";
+import { parseJalaliText, parseJalaliTextWithTime } from "../utils/toGregorian";
 import {
   addDays,
   addJalaliMonths,
@@ -13,7 +13,9 @@ import {
 } from "../utils/calendarGrid";
 import { fromJalaliParts, toJalaliParts } from "../adapters/dayjsAdapter";
 import { usePopoverPosition } from "../utils/usePopoverPosition";
-import type { BasePickerProps, BasePickerClasses } from "../types/shared";
+import { TimePicker } from "./_TimePicker";
+import { setTime } from "../utils/timeUtils";
+import type { BasePickerProps, BasePickerClasses, TimePickerConfig } from "../types/shared";
 
 export type PersianDatePickerClasses = Partial<
   BasePickerClasses & {
@@ -25,6 +27,7 @@ export type PersianDatePickerProps = BasePickerProps & {
   value: Date | null;
   onChange: (date: Date | null) => void;
   placeholder?: string;
+  timePicker?: TimePickerConfig;
   classes?: PersianDatePickerClasses;
 };
 
@@ -32,11 +35,20 @@ function cx(...parts: Array<string | undefined | false>) {
   return parts.filter(Boolean).join(" ");
 }
 
-function defaultFormatValue(date: Date) {
+function defaultFormatValue(date: Date, timeConfig?: { enabled: boolean; format?: 'HH:mm' | 'HH:mm:ss' }) {
+  if (timeConfig?.enabled) {
+    return formatJalaliWithTime(date, timeConfig.format);
+  }
   return toJalali(date).formatted;
 }
 
-function defaultParseValue(text: string) {
+function defaultParseValue(text: string, timeConfig?: { enabled: boolean; format?: 'HH:mm' | 'HH:mm:ss' }) {
+  if (timeConfig?.enabled) {
+    return parseJalaliTextWithTime(text, { 
+      allowLooseSeparators: true,
+      timeFormat: timeConfig.format 
+    });
+  }
   return parseJalaliText(text, { allowLooseSeparators: true });
 }
 
@@ -74,8 +86,9 @@ export function PersianDatePicker(props: PersianDatePickerProps) {
     mode = "popover",
     theme = "light",
     popover,
-    formatValue = defaultFormatValue,
-    parseValue = defaultParseValue,
+    timePicker,
+    formatValue,
+    parseValue,
     weekdays,
     monthLabels,
     renderMonthLabel,
@@ -84,6 +97,35 @@ export function PersianDatePicker(props: PersianDatePickerProps) {
     className,
     classes,
   } = props;
+
+  // Normalize timePicker config
+  const timeConfig = React.useMemo(() => {
+    if (typeof timePicker === 'boolean') {
+      return timePicker ? { enabled: true } : { enabled: false };
+    }
+    return timePicker ?? { enabled: false };
+  }, [timePicker]);
+
+  // Create formatValue and parseValue with timeConfig
+  const effectiveFormatValue = React.useCallback(
+    (date: Date) => {
+      if (formatValue) {
+        return formatValue(date);
+      }
+      return defaultFormatValue(date, timeConfig);
+    },
+    [formatValue, timeConfig]
+  );
+
+  const effectiveParseValue = React.useCallback(
+    (text: string) => {
+      if (parseValue) {
+        return parseValue(text);
+      }
+      return defaultParseValue(text, timeConfig);
+    },
+    [parseValue, timeConfig]
+  );
 
   const themeClass =
     theme === "dark"
@@ -123,7 +165,7 @@ export function PersianDatePicker(props: PersianDatePickerProps) {
     return base;
   });
   const [text, setText] = React.useState<string>(() =>
-    value ? formatValue(value) : ""
+    value ? effectiveFormatValue(value) : ""
   );
   const [panel, setPanel] = React.useState<"days" | "years" | "months">("days");
   const [yearPageStart, setYearPageStart] = React.useState(() => {
@@ -137,13 +179,13 @@ export function PersianDatePicker(props: PersianDatePickerProps) {
   // Keep input text in sync with controlled value (unless the user is actively editing).
   React.useEffect(() => {
     if (isEditingRef.current) return;
-    setText(value ? formatValue(value) : "");
+    setText(value ? effectiveFormatValue(value) : "");
     setViewMonth(getInitialViewMonth(value));
     setFocusedDate(value ?? getToday());
     const jy = getInitialViewMonth(value).jy;
     setPendingYear(jy);
     setYearPageStart(jy - (jy % 12));
-  }, [value, formatValue]);
+  }, [value, effectiveFormatValue]);
 
   // Close on outside click (SSR-safe because effect only runs on client).
   React.useEffect(() => {
@@ -236,20 +278,27 @@ export function PersianDatePicker(props: PersianDatePickerProps) {
   function commitFromText(nextText: string) {
     const trimmed = nextText.trim();
     if (!trimmed) {
-      onChange(null);
+      // If time is enabled, we should set a date with default time instead of null
+      if (timeConfig.enabled && timeConfig.defaultTime) {
+        const today = new Date();
+        const dateWithTime = setTime(today, timeConfig.defaultTime.hour, timeConfig.defaultTime.minute, timeConfig.defaultTime.second);
+        onChange(dateWithTime);
+      } else {
+        onChange(null);
+      }
       return;
     }
 
-    const parsed = parseValue(trimmed);
+    const parsed = effectiveParseValue(trimmed);
     if (!parsed) {
       // Invalid: revert to controlled value on blur.
-      setText(selected ? formatValue(selected) : trimmed);
+      setText(selected ? effectiveFormatValue(selected) : trimmed);
       return;
     }
 
     const next = normalizeInputValue(parsed, minDate, maxDate);
     if (!next) {
-      setText(selected ? formatValue(selected) : trimmed);
+      setText(selected ? effectiveFormatValue(selected) : trimmed);
       return;
     }
 
@@ -325,8 +374,15 @@ export function PersianDatePicker(props: PersianDatePickerProps) {
     if (e.key === "Enter") {
       e.preventDefault();
       if (!isWithinRange(focusedDate, minDate, maxDate)) return;
-      onChange(focusedDate);
-      setText(formatValue(focusedDate));
+      // If time is enabled and we have a current value, preserve its time
+      let dateToSet = focusedDate;
+      if (timeConfig.enabled && value) {
+        dateToSet = setTime(focusedDate, value.getHours(), value.getMinutes(), value.getSeconds());
+      } else if (timeConfig.enabled && timeConfig.defaultTime) {
+        dateToSet = setTime(focusedDate, timeConfig.defaultTime.hour, timeConfig.defaultTime.minute, timeConfig.defaultTime.second);
+      }
+      onChange(dateToSet);
+      setText(effectiveFormatValue(dateToSet));
       closeCalendar();
     }
   }
@@ -344,9 +400,16 @@ export function PersianDatePicker(props: PersianDatePickerProps) {
   function selectCell(cell: CalendarDayCell) {
     if (disabled) return;
     if (!isWithinRange(cell.gregorian, minDate, maxDate)) return;
-    onChange(cell.gregorian);
-    setText(formatValue(cell.gregorian));
-    setFocusedDate(cell.gregorian);
+    // If time is enabled and we have a current value, preserve its time
+    let dateToSet = cell.gregorian;
+    if (timeConfig.enabled && value) {
+      dateToSet = setTime(cell.gregorian, value.getHours(), value.getMinutes(), value.getSeconds());
+    } else if (timeConfig.enabled && timeConfig.defaultTime) {
+      dateToSet = setTime(cell.gregorian, timeConfig.defaultTime.hour, timeConfig.defaultTime.minute, timeConfig.defaultTime.second);
+    }
+    onChange(dateToSet);
+    setText(effectiveFormatValue(dateToSet));
+    setFocusedDate(dateToSet);
     setOpen(false);
     inputRef.current?.focus();
   }
@@ -488,62 +551,97 @@ export function PersianDatePicker(props: PersianDatePickerProps) {
       </div>
 
       {panel === "days" ? (
-        <div className={cx("dvx-pdp__grid", classes?.grid)}>
-          <div className="dvx-pdp__weekdays" aria-hidden="true">
-            {weekdayLabels.map((w, idx) => (
-              <div
-                key={idx}
-                className={cx("dvx-pdp__weekday", classes?.weekday)}
-              >
-                {w}
-              </div>
-            ))}
-          </div>
+        <>
+          <div className={cx("dvx-pdp__grid", classes?.grid)}>
+            <div className="dvx-pdp__weekdays" aria-hidden="true">
+              {weekdayLabels.map((w, idx) => (
+                <div
+                  key={idx}
+                  className={cx("dvx-pdp__weekday", classes?.weekday)}
+                >
+                  {w}
+                </div>
+              ))}
+            </div>
 
-          <div className="dvx-pdp__days">
-            {grid.map((row, r) => (
-              <div className="dvx-pdp__row" key={r}>
-                {row.map((cell) => {
-                  const cellDisabled = isCellDisabled(cell);
-                  const isSelected = selected
-                    ? isSameDay(cell.gregorian, selected)
-                    : false;
-                  const isToday = isSameDay(cell.gregorian, today);
-                  const isFocused = isSameDay(cell.gregorian, focusedDate);
+            <div className="dvx-pdp__days">
+              {grid.map((row, r) => (
+                <div className="dvx-pdp__row" key={r}>
+                  {row.map((cell) => {
+                    const cellDisabled = isCellDisabled(cell);
+                    const isSelected = selected
+                      ? isSameDay(cell.gregorian, selected)
+                      : false;
+                    const isToday = isSameDay(cell.gregorian, today);
+                    const isFocused = isSameDay(cell.gregorian, focusedDate);
 
-                  return (
-                    <button
-                      key={`${cell.jalali.jy}-${cell.jalali.jm}-${cell.jalali.jd}`}
-                      type="button"
-                      className={cx(
-                        "dvx-pdp__day",
-                        classes?.day,
-                        !cell.inCurrentMonth &&
-                          cx("dvx-pdp__day--outside", classes?.dayOutside),
-                        cellDisabled &&
-                          cx("dvx-pdp__day--disabled", classes?.dayDisabled),
-                        isSelected &&
-                          cx("dvx-pdp__day--selected", classes?.daySelected),
-                        isToday && cx("dvx-pdp__day--today", classes?.dayToday),
-                        isFocused && "dvx-pdp__day--focused"
-                      )}
-                      disabled={cellDisabled}
-                      onClick={() => selectCell(cell)}
-                      onMouseEnter={() => {
-                        // Prevent accidental month switching when hovering the leading/trailing days
-                        // from adjacent months (they are rendered in the grid).
-                        if (cell.inCurrentMonth) setFocusedDate(cell.gregorian);
-                      }}
-                      aria-pressed={isSelected}
-                    >
-                      {cell.jalali.jd}
-                    </button>
-                  );
-                })}
-              </div>
-            ))}
+                    return (
+                      <button
+                        key={`${cell.jalali.jy}-${cell.jalali.jm}-${cell.jalali.jd}`}
+                        type="button"
+                        className={cx(
+                          "dvx-pdp__day",
+                          classes?.day,
+                          !cell.inCurrentMonth &&
+                            cx("dvx-pdp__day--outside", classes?.dayOutside),
+                          cellDisabled &&
+                            cx("dvx-pdp__day--disabled", classes?.dayDisabled),
+                          isSelected &&
+                            cx("dvx-pdp__day--selected", classes?.daySelected),
+                          isToday && cx("dvx-pdp__day--today", classes?.dayToday),
+                          isFocused && "dvx-pdp__day--focused"
+                        )}
+                        disabled={cellDisabled}
+                        onClick={() => selectCell(cell)}
+                        onMouseEnter={() => {
+                          // Prevent accidental month switching when hovering the leading/trailing days
+                          // from adjacent months (they are rendered in the grid).
+                          if (cell.inCurrentMonth) setFocusedDate(cell.gregorian);
+                        }}
+                        aria-pressed={isSelected}
+                      >
+                        {cell.jalali.jd}
+                      </button>
+                    );
+                  })}
+                </div>
+              ))}
+            </div>
           </div>
-        </div>
+          {timeConfig.enabled && (() => {
+            // Ensure we have a date value for TimePicker
+            const timePickerValue = value ?? (() => {
+              const today = new Date();
+              if (timeConfig.defaultTime) {
+                return setTime(today, timeConfig.defaultTime.hour, timeConfig.defaultTime.minute, timeConfig.defaultTime.second);
+              }
+              return today;
+            })();
+            
+            return (
+              <TimePicker
+                value={timePickerValue}
+                onChange={(newDate) => {
+                  onChange(newDate);
+                  setText(effectiveFormatValue(newDate));
+                }}
+                format={timeConfig.format}
+                showSeconds={timeConfig.showSeconds}
+                hourStep={timeConfig.hourStep}
+                minuteStep={timeConfig.minuteStep}
+                secondStep={timeConfig.secondStep}
+                disabled={disabled}
+                classes={{
+                  root: classes?.timePicker,
+                  stepper: classes?.timeStepper,
+                  stepperButton: classes?.timeStepperButton,
+                  stepperInput: classes?.timeStepperInput,
+                  separator: classes?.timeSeparator,
+                }}
+              />
+            );
+          })()}
+        </>
       ) : panel === "years" ? (
         <div className="dvx-pdp__panel">
           <div className="dvx-pdp__panelGrid">

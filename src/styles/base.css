@@ -247,4 +247,94 @@
   box-shadow: 0 0 0 4px var(--dvx-pdp-ring);
 }
 
+.dvx-pdp__time {
+  direction: ltr;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  padding: 12px;
+  border-top: 1px solid var(--dvx-pdp-border);
+}
+
+.dvx-pdp__timeStepper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+}
+
+.dvx-pdp__timeStepperButton {
+  width: 32px;
+  height: 24px;
+  padding: 0;
+  border: 1px solid var(--dvx-pdp-border);
+  background: var(--dvx-pdp-bg);
+  color: var(--dvx-pdp-fg);
+  cursor: pointer;
+  font-size: 12px;
+  line-height: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  user-select: none;
+  transition: background 0.15s;
+  border-radius: 6px;
+}
+
+.dvx-pdp__timeStepperButton:hover {
+  background: var(--dvx-pdp-dayHover);
+}
+
+.dvx-pdp__timeStepperButton:active {
+  background: var(--dvx-pdp-accent);
+  color: var(--dvx-pdp-accentFg);
+}
+
+.dvx-pdp__timeStepperButton:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.dvx-pdp__timeStepperInput {
+  width: 55px;
+  height: 36px;
+  text-align: center;
+  padding: 4px;
+  border: 1px solid var(--dvx-pdp-border);
+  border-radius: 8px;
+  font-size: 15px;
+  font-weight: 500;
+  background: var(--dvx-pdp-bg);
+  color: var(--dvx-pdp-fg);
+  outline: none;
+  /* Remove default number input arrows */
+  appearance: textfield;
+  -moz-appearance: textfield;
+}
+
+.dvx-pdp__timeStepperInput::-webkit-outer-spin-button,
+.dvx-pdp__timeStepperInput::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+.dvx-pdp__timeStepperInput:focus {
+  border-color: var(--dvx-pdp-accent);
+  box-shadow: 0 0 0 2px var(--dvx-pdp-ring);
+}
+
+.dvx-pdp__timeStepperInput:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.dvx-pdp__timeSeparator {
+  font-size: 18px;
+  font-weight: 500;
+  color: var(--dvx-pdp-muted);
+  padding: 0 4px;
+  user-select: none;
+}
+
 
