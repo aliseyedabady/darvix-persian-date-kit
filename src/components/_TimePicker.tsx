@@ -1,5 +1,5 @@
 import * as React from 'react'
-import { normalizeTime, setTime, addTime } from '../utils/timeUtils'
+import { normalizeTime, setTime } from '../utils/timeUtils'
 import type { TimePickerClasses } from '../types/shared'
 
 export type TimePickerProps = {
@@ -36,11 +36,11 @@ export function TimePicker(props: TimePickerProps) {
   const minute = value.getMinutes()
   const second = value.getSeconds()
 
-  const hourIntervalRef = React.useRef<NodeJS.Timeout | null>(null)
-  const minuteIntervalRef = React.useRef<NodeJS.Timeout | null>(null)
-  const secondIntervalRef = React.useRef<NodeJS.Timeout | null>(null)
-  const speedUp1Ref = React.useRef<NodeJS.Timeout | null>(null)
-  const speedUp2Ref = React.useRef<NodeJS.Timeout | null>(null)
+  const hourIntervalRef = React.useRef<ReturnType<typeof setTimeout> | null>(null)
+  const minuteIntervalRef = React.useRef<ReturnType<typeof setTimeout> | null>(null)
+  const secondIntervalRef = React.useRef<ReturnType<typeof setTimeout> | null>(null)
+  const speedUp1Ref = React.useRef<ReturnType<typeof setTimeout> | null>(null)
+  const speedUp2Ref = React.useRef<ReturnType<typeof setTimeout> | null>(null)
   const speedRef = React.useRef(200)
   const startTimeRef = React.useRef<number | null>(null)
 
