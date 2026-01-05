@@ -99,6 +99,16 @@ export function buildJalaliMonthGrid(opts: BuildJalaliMonthGridOptions): Calenda
     }
     rows.push(row)
   }
+
+  // Remove the last week if it doesn't contain any days from the current month
+  if (rows.length > 0) {
+    const lastWeek = rows[rows.length - 1]
+    const hasCurrentMonthDay = lastWeek.some(cell => cell.inCurrentMonth)
+    if (!hasCurrentMonthDay) {
+      rows.pop()
+    }
+  }
+
   return rows
 }
 
