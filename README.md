@@ -157,6 +157,46 @@ With seconds:
 />
 ```
 
+### Multiple date selection
+
+```tsx
+import { useState } from 'react'
+import { PersianDatePicker } from 'persian-date-kit'
+
+export function MultipleSelectionExample() {
+  const [dates, setDates] = useState<Date[]>([])
+
+  return (
+    <PersianDatePicker
+      value={dates}
+      onChange={setDates}
+      multiple={true}
+      maxSelections={5} // Optional: limit number of selections
+    />
+  )
+}
+```
+
+### Custom calendar button
+
+```tsx
+import { Calendar } from 'lucide-react'
+
+// Hide the calendar button
+<PersianDatePicker
+  value={value}
+  onChange={setValue}
+  showCalendarButton={false}
+/>
+
+// Use custom icon
+<PersianDatePicker
+  value={value}
+  onChange={setValue}
+  calendarIcon={<Calendar className="w-4 h-4" />}
+/>
+```
+
 ## React Hook Form (optional adapter)
 The core package has **no required** form dependency.
 If you want React Hook Form integration, import from the subpath:
@@ -191,10 +231,14 @@ All values you receive in `onChange` are **Gregorian** (`Date | null`). Jalali i
 
 | Prop | Type | Default | Description |
 |---|---|---:|---|
-| `value` | `Date \| null` | — | Controlled value (**Gregorian**) |
-| `onChange` | `(date: Date \| null) => void` | — | Called with the next value (**Gregorian**) |
+| `value` | `Date \| null \| Date[]` | — | Controlled value (**Gregorian**). Can be single date or array for multiple selection |
+| `onChange` | `(date: Date \| null \| Date[]) => void` | — | Called with the next value (**Gregorian**) |
 | `placeholder?` | `string` | `undefined` | Input placeholder (popover mode) |
+| `multiple?` | `boolean` | `false` | Enable multiple date selection |
+| `maxSelections?` | `number` | `undefined` | Maximum number of selectable dates (multiple mode) |
 | `timePicker?` | `TimePickerConfig \| boolean` | `undefined` | Enable time picker (see **TimePickerConfig** below) |
+| `showCalendarButton?` | `boolean` | `true` | Show/hide the calendar button |
+| `calendarIcon?` | `React.ReactNode` | `undefined` | Custom calendar icon. If not provided, default icon is used |
 | `classes?` | `PersianDatePickerClasses` | `undefined` | Per-slot class overrides (see **Classes table** below) |
 
 ### `PersianDateRangePicker`

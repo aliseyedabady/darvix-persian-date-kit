@@ -31,6 +31,14 @@ export type PersianDatePickerProps = BasePickerProps & {
   maxSelections?: number;
   timePicker?: TimePickerConfig;
   classes?: PersianDatePickerClasses;
+  /**
+   * Show/hide the calendar button (default: `true`).
+   */
+  showCalendarButton?: boolean;
+  /**
+   * Custom calendar icon. If not provided, default calendar icon is used.
+   */
+  calendarIcon?: React.ReactNode;
 };
 
 function cx(...parts: Array<string | undefined | false>) {
@@ -98,6 +106,8 @@ export function PersianDatePicker(props: PersianDatePickerProps) {
     renderMonthLabel,
     prevIcon,
     nextIcon,
+    showCalendarButton = true,
+    calendarIcon,
     className,
     classes,
   } = props;
@@ -845,20 +855,24 @@ export function PersianDatePicker(props: PersianDatePickerProps) {
             aria-haspopup="dialog"
             aria-expanded={open}
           />
-          <button
-            type="button"
-            className={cx("dvx-pdp__button", classes?.button)}
-            onClick={() => (open ? setOpen(false) : openCalendar())}
-            disabled={disabled}
-            aria-label="Open calendar"
-          >
-            <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true">
-              <path
-                fill="currentColor"
-                d="M7 2a1 1 0 0 1 1 1v1h8V3a1 1 0 1 1 2 0v1h1.5A2.5 2.5 0 0 1 22 6.5v13A2.5 2.5 0 0 1 19.5 22h-15A2.5 2.5 0 0 1 2 19.5v-13A2.5 2.5 0 0 1 4.5 4H6V3a1 1 0 0 1 1-1Zm0 6H4v11.5c0 .276.224.5.5.5h15c.276 0 .5-.224.5-.5V8H7Zm-2.5-2c-.276 0-.5.224-.5.5V6h16v.5c0-.276-.224-.5-.5-.5H4.5Z"
-              />
-            </svg>
-          </button>
+          {showCalendarButton && (
+            <button
+              type="button"
+              className={cx("dvx-pdp__button", classes?.button)}
+              onClick={() => (open ? setOpen(false) : openCalendar())}
+              disabled={disabled}
+              aria-label="Open calendar"
+            >
+              {calendarIcon || (
+                <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true">
+                  <path
+                    fill="currentColor"
+                    d="M7 2a1 1 0 0 1 1 1v1h8V3a1 1 0 1 1 2 0v1h1.5A2.5 2.5 0 0 1 22 6.5v13A2.5 2.5 0 0 1 19.5 22h-15A2.5 2.5 0 0 1 2 19.5v-13A2.5 2.5 0 0 1 4.5 4H6V3a1 1 0 0 1 1-1Zm0 6H4v11.5c0 .276.224.5.5.5h15c.276 0 .5-.224.5-.5V8H7Zm-2.5-2c-.276 0-.5.224-.5.5V6h16v.5c0-.276-.224-.5-.5-.5H4.5Z"
+                  />
+                </svg>
+              )}
+            </button>
+          )}
         </div>
       )}
 
