@@ -54,7 +54,6 @@
 }
 
 .dvx-pdp__input {
-  width: 160px;
   padding: 8px 10px;
   border-radius: 10px;
   border: 1px solid var(--dvx-pdp-border);
