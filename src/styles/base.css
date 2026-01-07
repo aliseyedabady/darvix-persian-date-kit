@@ -194,12 +194,23 @@
   color: var(--dvx-pdp-accentFg);
 }
 
+.dvx-pdp__day--selected:hover {
+  background: var(--dvx-pdp-accent);
+  color: var(--dvx-pdp-accentFg);
+}
+
 .dvx-pdp__day--inRange {
   background: var(--dvx-pdp-dayHover);
 }
 
 .dvx-pdp__day--rangeStart,
 .dvx-pdp__day--rangeEnd {
+  background: var(--dvx-pdp-accent);
+  color: var(--dvx-pdp-accentFg);
+}
+
+.dvx-pdp__day--rangeStart:hover,
+.dvx-pdp__day--rangeEnd:hover {
   background: var(--dvx-pdp-accent);
   color: var(--dvx-pdp-accentFg);
 }
