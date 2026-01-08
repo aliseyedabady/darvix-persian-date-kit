@@ -21,7 +21,8 @@
     "type": "git",
     "url": "https://github.com/aliseyedabady/darvix-persian-date-kit.git"
   },
-  "homepage": "https://github.com/aliseyedabady/darvix-persian-date-kit#readme",
+  "homepage": "https://darvix.ir/products/persian-date-kit",
+  "demo": "https://darvix.ir/products/persian-date-kit",
   "bugs": {
     "url": "https://github.com/aliseyedabady/darvix-persian-date-kit/issues"
   },

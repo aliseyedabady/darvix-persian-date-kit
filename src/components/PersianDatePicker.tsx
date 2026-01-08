@@ -342,7 +342,7 @@ export function PersianDatePicker(props: PersianDatePickerProps) {
         const dateWithTime = setTime(today, timeConfig.defaultTime.hour, timeConfig.defaultTime.minute, timeConfig.defaultTime.second);
         onChange(dateWithTime);
       } else {
-        onChange(null);
+      onChange(null);
       }
       return;
     }
@@ -464,7 +464,7 @@ export function PersianDatePicker(props: PersianDatePickerProps) {
         }
         onChange(dateToSet);
         setText(effectiveFormatValue(dateToSet));
-        closeCalendar();
+      closeCalendar();
       }
     }
   }
@@ -502,7 +502,7 @@ export function PersianDatePicker(props: PersianDatePickerProps) {
         onChange(newDates as Date | null | Date[]);
         setText(formatValueForDisplay(newDates));
       }
-      setFocusedDate(cell.gregorian);
+    setFocusedDate(cell.gregorian);
       // Don't close calendar in multiple mode
     } else {
       // Single selection mode
@@ -516,8 +516,8 @@ export function PersianDatePicker(props: PersianDatePickerProps) {
       onChange(dateToSet);
       setText(effectiveFormatValue(dateToSet));
       setFocusedDate(dateToSet);
-      setOpen(false);
-      inputRef.current?.focus();
+    setOpen(false);
+    inputRef.current?.focus();
     }
   }
 
@@ -659,21 +659,21 @@ export function PersianDatePicker(props: PersianDatePickerProps) {
 
       {panel === "days" ? (
         <>
-          <div className={cx("dvx-pdp__grid", classes?.grid)}>
-            <div className="dvx-pdp__weekdays" aria-hidden="true">
-              {weekdayLabels.map((w, idx) => (
-                <div
-                  key={idx}
-                  className={cx("dvx-pdp__weekday", classes?.weekday)}
-                >
-                  {w}
-                </div>
-              ))}
-            </div>
+        <div className={cx("dvx-pdp__grid", classes?.grid)}>
+          <div className="dvx-pdp__weekdays" aria-hidden="true">
+            {weekdayLabels.map((w, idx) => (
+              <div
+                key={idx}
+                className={cx("dvx-pdp__weekday", classes?.weekday)}
+              >
+                {w}
+              </div>
+            ))}
+          </div>
 
-            <div className="dvx-pdp__days">
-              {grid.map((row, r) => (
-                <div className="dvx-pdp__row" key={r}>
+          <div className="dvx-pdp__days">
+            {grid.map((row, r) => (
+              <div className="dvx-pdp__row" key={r}>
                 {row.map((cell) => {
                   const cellDisabled = isCellDisabled(cell);
                   const isSelected = multiple
@@ -684,39 +684,39 @@ export function PersianDatePicker(props: PersianDatePickerProps) {
                   const isToday = isSameDay(cell.gregorian, today);
                   const isFocused = isSameDay(cell.gregorian, focusedDate);
 
-                    return (
-                      <button
-                        key={`${cell.jalali.jy}-${cell.jalali.jm}-${cell.jalali.jd}`}
-                        type="button"
-                        className={cx(
-                          "dvx-pdp__day",
-                          classes?.day,
-                          !cell.inCurrentMonth &&
-                            cx("dvx-pdp__day--outside", classes?.dayOutside),
-                          cellDisabled &&
-                            cx("dvx-pdp__day--disabled", classes?.dayDisabled),
-                          isSelected &&
-                            cx("dvx-pdp__day--selected", classes?.daySelected),
-                          isToday && cx("dvx-pdp__day--today", classes?.dayToday),
-                          isFocused && "dvx-pdp__day--focused"
-                        )}
-                        disabled={cellDisabled}
-                        onClick={() => selectCell(cell)}
-                        onMouseEnter={() => {
-                          // Prevent accidental month switching when hovering the leading/trailing days
-                          // from adjacent months (they are rendered in the grid).
-                          if (cell.inCurrentMonth) setFocusedDate(cell.gregorian);
-                        }}
-                        aria-pressed={isSelected}
-                      >
-                        {cell.jalali.jd}
-                      </button>
-                    );
-                  })}
-                </div>
-              ))}
-            </div>
+                  return (
+                    <button
+                      key={`${cell.jalali.jy}-${cell.jalali.jm}-${cell.jalali.jd}`}
+                      type="button"
+                      className={cx(
+                        "dvx-pdp__day",
+                        classes?.day,
+                        !cell.inCurrentMonth &&
+                          cx("dvx-pdp__day--outside", classes?.dayOutside),
+                        cellDisabled &&
+                          cx("dvx-pdp__day--disabled", classes?.dayDisabled),
+                        isSelected &&
+                          cx("dvx-pdp__day--selected", classes?.daySelected),
+                        isToday && cx("dvx-pdp__day--today", classes?.dayToday),
+                        isFocused && "dvx-pdp__day--focused"
+                      )}
+                      disabled={cellDisabled}
+                      onClick={() => selectCell(cell)}
+                      onMouseEnter={() => {
+                        // Prevent accidental month switching when hovering the leading/trailing days
+                        // from adjacent months (they are rendered in the grid).
+                        if (cell.inCurrentMonth) setFocusedDate(cell.gregorian);
+                      }}
+                      aria-pressed={isSelected}
+                    >
+                      {cell.jalali.jd}
+                    </button>
+                  );
+                })}
+              </div>
+            ))}
           </div>
+        </div>
           {timeConfig.enabled && !multiple && (() => {
             // Ensure we have a date value for TimePicker (only in single mode)
             const singleValue = value as Date | null;
@@ -847,8 +847,8 @@ export function PersianDatePicker(props: PersianDatePickerProps) {
             }}
             onBlur={() => {
               if (!multiple) {
-                isEditingRef.current = false;
-                commitFromText(text);
+              isEditingRef.current = false;
+              commitFromText(text);
               }
             }}
             onKeyDown={onInputKeyDown}
@@ -856,22 +856,22 @@ export function PersianDatePicker(props: PersianDatePickerProps) {
             aria-expanded={open}
           />
           {showCalendarButton && (
-            <button
-              type="button"
-              className={cx("dvx-pdp__button", classes?.button)}
-              onClick={() => (open ? setOpen(false) : openCalendar())}
-              disabled={disabled}
-              aria-label="Open calendar"
-            >
+          <button
+            type="button"
+            className={cx("dvx-pdp__button", classes?.button)}
+            onClick={() => (open ? setOpen(false) : openCalendar())}
+            disabled={disabled}
+            aria-label="Open calendar"
+          >
               {calendarIcon || (
-                <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true">
-                  <path
-                    fill="currentColor"
-                    d="M7 2a1 1 0 0 1 1 1v1h8V3a1 1 0 1 1 2 0v1h1.5A2.5 2.5 0 0 1 22 6.5v13A2.5 2.5 0 0 1 19.5 22h-15A2.5 2.5 0 0 1 2 19.5v-13A2.5 2.5 0 0 1 4.5 4H6V3a1 1 0 0 1 1-1Zm0 6H4v11.5c0 .276.224.5.5.5h15c.276 0 .5-.224.5-.5V8H7Zm-2.5-2c-.276 0-.5.224-.5.5V6h16v.5c0-.276-.224-.5-.5-.5H4.5Z"
-                  />
-                </svg>
+            <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true">
+              <path
+                fill="currentColor"
+                d="M7 2a1 1 0 0 1 1 1v1h8V3a1 1 0 1 1 2 0v1h1.5A2.5 2.5 0 0 1 22 6.5v13A2.5 2.5 0 0 1 19.5 22h-15A2.5 2.5 0 0 1 2 19.5v-13A2.5 2.5 0 0 1 4.5 4H6V3a1 1 0 0 1 1-1Zm0 6H4v11.5c0 .276.224.5.5.5h15c.276 0 .5-.224.5-.5V8H7Zm-2.5-2c-.276 0-.5.224-.5.5V6h16v.5c0-.276-.224-.5-.5-.5H4.5Z"
+              />
+            </svg>
               )}
-            </button>
+          </button>
           )}
         </div>
       )}

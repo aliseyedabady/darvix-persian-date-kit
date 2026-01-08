@@ -241,83 +241,83 @@ function App() {
 
       {/* Main Content */}
       <div className="demo-main">
-        <section className="demo-hero">
-          <div className="demo-header">
-            <div>
-              <h1 className="demo-title">persian-date-kit</h1>
-              <p className="demo-subtitle">
-                یک Date Picker حرفه‌ای برای ری‌اکت با نمایش جلالی و ذخیره‌سازی
-                گرگوری. RTL-first، کنترل‌شده، SSR-safe و مناسب انتشار روی npm.
-              </p>
-            </div>
-            <div className="demo-actions">
-              <div className="demo-row" style={{ gap: 6 }}>
-                <button
-                  type="button"
-                  className="demo-button"
-                  onClick={() => setTheme("light")}
-                >
-                  Theme: Light
-                </button>
-                <button
-                  type="button"
-                  className="demo-button"
-                  onClick={() => setTheme("dark")}
-                >
-                  Dark
-                </button>
-                <button
-                  type="button"
-                  className="demo-button"
-                  onClick={() => setTheme("auto")}
-                >
-                  Auto
-                </button>
-              </div>
+      <section className="demo-hero">
+        <div className="demo-header">
+          <div>
+            <h1 className="demo-title">persian-date-kit</h1>
+            <p className="demo-subtitle">
+              یک Date Picker حرفه‌ای برای ری‌اکت با نمایش جلالی و ذخیره‌سازی
+              گرگوری. RTL-first، کنترل‌شده، SSR-safe و مناسب انتشار روی npm.
+            </p>
+          </div>
+          <div className="demo-actions">
+            <div className="demo-row" style={{ gap: 6 }}>
               <button
                 type="button"
-                className="demo-button demo-buttonPrimary"
-                onClick={() => setShowEdgeTest((v) => !v)}
+                className="demo-button"
+                onClick={() => setTheme("light")}
               >
-                {showEdgeTest ? "بستن تست Edge" : "نمایش تست Edge"}
+                Theme: Light
               </button>
               <button
                 type="button"
                 className="demo-button"
-                onClick={() => setModalOpen(true)}
+                onClick={() => setTheme("dark")}
               >
-                تست داخل Modal
+                Dark
+              </button>
+              <button
+                type="button"
+                className="demo-button"
+                onClick={() => setTheme("auto")}
+              >
+                Auto
               </button>
             </div>
+            <button
+              type="button"
+              className="demo-button demo-buttonPrimary"
+              onClick={() => setShowEdgeTest((v) => !v)}
+            >
+              {showEdgeTest ? "بستن تست Edge" : "نمایش تست Edge"}
+            </button>
+            <button
+              type="button"
+              className="demo-button"
+              onClick={() => setModalOpen(true)}
+            >
+              تست داخل Modal
+            </button>
           </div>
+        </div>
 
-          <div className="demo-kpis">
-            <div className="demo-kpi">
-              <div className="demo-kpiLabel">Internal value</div>
-              <div className="demo-kpiValue">Gregorian Date</div>
-            </div>
-            <div className="demo-kpi">
-              <div className="demo-kpiLabel">Display / input</div>
-              <div className="demo-kpiValue">Jalali</div>
-            </div>
-            <div className="demo-kpi">
-              <div className="demo-kpiLabel">Modes</div>
-              <div className="demo-kpiValue">Popover / Inline</div>
-            </div>
-            <div className="demo-kpi">
-              <div className="demo-kpiLabel">Extras</div>
-              <div className="demo-kpiValue">Range + RHF + Time + Multiple</div>
-            </div>
+        <div className="demo-kpis">
+          <div className="demo-kpi">
+            <div className="demo-kpiLabel">Internal value</div>
+            <div className="demo-kpiValue">Gregorian Date</div>
           </div>
-        </section>
+          <div className="demo-kpi">
+            <div className="demo-kpiLabel">Display / input</div>
+            <div className="demo-kpiValue">Jalali</div>
+          </div>
+          <div className="demo-kpi">
+            <div className="demo-kpiLabel">Modes</div>
+            <div className="demo-kpiValue">Popover / Inline</div>
+          </div>
+          <div className="demo-kpi">
+            <div className="demo-kpiLabel">Extras</div>
+              <div className="demo-kpiValue">Range + RHF + Time + Multiple</div>
+          </div>
+        </div>
+      </section>
 
         {/* Active Section Content */}
         {activeSection === "single" && (
-          <section className="demo-card">
-            <div className="demo-cardTitle">
-              <span>تاریخ تکی (Popover)</span>
-              <span className="demo-muted">controlled: Date | null</span>
-            </div>
+        <section className="demo-card">
+          <div className="demo-cardTitle">
+            <span>تاریخ تکی (Popover)</span>
+            <span className="demo-muted">controlled: Date | null</span>
+          </div>
             {activeSectionData && (
               <div className="demo-section-info">
                 <p className="demo-section-description">{activeSectionData.description}</p>
@@ -348,36 +348,36 @@ function App() {
                 )}
               </div>
             )}
-            <div className="demo-row">
+          <div className="demo-row">
             <PersianDatePicker
               theme={theme}
               value={value}
               onChange={handleSingleChange}
-                minDate={minDate}
-                maxDate={maxDate}
-                placeholder="YYYY/MM/DD"
-                monthLabels={persianMonthLabels}
-                weekdays={["ش", "ی", "د", "س", "چ", "پ", "ج"]}
-                popover={{
-                  portal: true,
-                  padding: 8,
-                  gutter: 8,
-                  strategy: "fixed",
-                }}
-              />
-            </div>
-            <pre className="demo-code">{`Gregorian: ${
-              value ? value.toISOString() : "null"
-            }`}</pre>
-          </section>
+              minDate={minDate}
+              maxDate={maxDate}
+              placeholder="YYYY/MM/DD"
+              monthLabels={persianMonthLabels}
+              weekdays={["ش", "ی", "د", "س", "چ", "پ", "ج"]}
+              popover={{
+                portal: true,
+                padding: 8,
+                gutter: 8,
+                strategy: "fixed",
+              }}
+            />
+          </div>
+          <pre className="demo-code">{`Gregorian: ${
+            value ? value.toISOString() : "null"
+          }`}</pre>
+        </section>
         )}
 
         {activeSection === "inline" && (
-          <section className="demo-card">
-            <div className="demo-cardTitle">
-              <span>تقویم Inline</span>
-              <span className="demo-muted">بدون input</span>
-            </div>
+        <section className="demo-card">
+          <div className="demo-cardTitle">
+            <span>تقویم Inline</span>
+            <span className="demo-muted">بدون input</span>
+          </div>
             {activeSectionData && (
               <div className="demo-section-info">
                 <p className="demo-section-description">{activeSectionData.description}</p>
@@ -408,25 +408,25 @@ function App() {
                 )}
               </div>
             )}
-            <PersianDatePicker
-              mode="inline"
-              theme={theme}
-              value={inlineValue}
+          <PersianDatePicker
+            mode="inline"
+            theme={theme}
+            value={inlineValue}
               onChange={handleInlineChange}
-              monthLabels={persianMonthLabels}
-              weekdays={["ش", "ی", "د", "س", "چ", "پ", "ج"]}
-              minDate={minDate}
-              maxDate={maxDate}
-            />
-          </section>
+            monthLabels={persianMonthLabels}
+            weekdays={["ش", "ی", "د", "س", "چ", "پ", "ج"]}
+            minDate={minDate}
+            maxDate={maxDate}
+          />
+        </section>
         )}
 
         {activeSection === "range" && (
-          <section className="demo-card">
-            <div className="demo-cardTitle">
-              <span>انتخاب بازه (Range)</span>
-              <span className="demo-muted">start/end</span>
-            </div>
+        <section className="demo-card">
+          <div className="demo-cardTitle">
+            <span>انتخاب بازه (Range)</span>
+            <span className="demo-muted">start/end</span>
+          </div>
             {activeSectionData && (
               <div className="demo-section-info">
                 <p className="demo-section-description">{activeSectionData.description}</p>
@@ -457,22 +457,22 @@ function App() {
                 )}
               </div>
             )}
-            <PersianDateRangePicker
-              theme={theme}
-              value={rangeValue}
-              onChange={setRangeValue}
-              monthLabels={persianMonthLabels}
-              weekdays={["ش", "ی", "د", "س", "چ", "پ", "ج"]}
-              inputVariant="single"
-              placeholder="بازه (YYYY/MM/DD - YYYY/MM/DD)"
-              minDate={minDate}
-              maxDate={maxDate}
-              popover={{ portal: true, padding: 8, gutter: 8, strategy: "fixed" }}
-            />
-            <pre className="demo-code">{`start: ${
-              rangeValue.start ? rangeValue.start.toISOString() : "null"
-            }\nend:   ${
-              rangeValue.end ? rangeValue.end.toISOString() : "null"
+          <PersianDateRangePicker
+            theme={theme}
+            value={rangeValue}
+            onChange={setRangeValue}
+            monthLabels={persianMonthLabels}
+            weekdays={["ش", "ی", "د", "س", "چ", "پ", "ج"]}
+            inputVariant="single"
+            placeholder="بازه (YYYY/MM/DD - YYYY/MM/DD)"
+            minDate={minDate}
+            maxDate={maxDate}
+            popover={{ portal: true, padding: 8, gutter: 8, strategy: "fixed" }}
+          />
+          <pre className="demo-code">{`start: ${
+            rangeValue.start ? rangeValue.start.toISOString() : "null"
+          }\nend:   ${
+            rangeValue.end ? rangeValue.end.toISOString() : "null"
             }`}</pre>
           </section>
         )}
@@ -623,8 +623,8 @@ ${multipleDates.map(d => d.toISOString()).join('\n')}`}</pre>
               </div>
               <pre className="demo-code">{`Gregorian: ${
                 timeValueWithSeconds ? timeValueWithSeconds.toISOString() : "null"
-              }`}</pre>
-            </section>
+          }`}</pre>
+        </section>
 
             <section className="demo-card">
               <div className="demo-cardTitle">
@@ -662,11 +662,11 @@ ${multipleDates.map(d => d.toISOString()).join('\n')}`}</pre>
         )}
 
         {activeSection === "disabled" && (
-          <section className="demo-card">
-            <div className="demo-cardTitle">
-              <span>غیرفعال</span>
-              <span className="demo-muted">disabled</span>
-            </div>
+        <section className="demo-card">
+          <div className="demo-cardTitle">
+            <span>غیرفعال</span>
+            <span className="demo-muted">disabled</span>
+          </div>
             {activeSectionData && (
               <div className="demo-section-info">
                 <p className="demo-section-description">{activeSectionData.description}</p>
@@ -697,185 +697,185 @@ ${multipleDates.map(d => d.toISOString()).join('\n')}`}</pre>
                 )}
               </div>
             )}
+          <PersianDatePicker
+            theme={theme}
+            value={null}
+            onChange={() => {}}
+            disabled
+            placeholder="Disabled"
+            monthLabels={persianMonthLabels}
+          />
+        </section>
+        )}
+
+        {showEdgeTest && (
+        <section className="demo-card" style={{ marginTop: 14 }}>
+          <div className="demo-cardTitle">
+            <span>تست جلوگیری از بیرون‌زدگی پاپ‌اور (Edge)</span>
+            <span className="demo-muted">portal + flip + clamp</span>
+          </div>
+          <div className="demo-edgeBox">
+            <div className="demo-muted">
+              این تست را فعال کن، سپس تقویم را باز کن و اسکرول/ریزایز کن تا
+              رفتار clamp/flip را ببینی.
+            </div>
             <PersianDatePicker
               theme={theme}
-              value={null}
-              onChange={() => {}}
-              disabled
-              placeholder="Disabled"
+              value={edgeValue}
+                onChange={handleEdgeChange}
+              placeholder="YYYY/MM/DD"
               monthLabels={persianMonthLabels}
+              weekdays={["ش", "ی", "د", "س", "چ", "پ", "ج"]}
+              popover={{
+                portal: true,
+                padding: 8,
+                gutter: 8,
+                strategy: "fixed",
+                placements: ["bottom", "top", "left", "right"],
+                align: "end",
+              }}
             />
-          </section>
-        )}
-
-        {showEdgeTest && (
-          <section className="demo-card" style={{ marginTop: 14 }}>
-            <div className="demo-cardTitle">
-              <span>تست جلوگیری از بیرون‌زدگی پاپ‌اور (Edge)</span>
-              <span className="demo-muted">portal + flip + clamp</span>
-            </div>
-            <div className="demo-edgeBox">
-              <div className="demo-muted">
-                این تست را فعال کن، سپس تقویم را باز کن و اسکرول/ریزایز کن تا
-                رفتار clamp/flip را ببینی.
-              </div>
-              <PersianDatePicker
-                theme={theme}
-                value={edgeValue}
-                onChange={handleEdgeChange}
-                placeholder="YYYY/MM/DD"
-                monthLabels={persianMonthLabels}
-                weekdays={["ش", "ی", "د", "س", "چ", "پ", "ج"]}
-                popover={{
-                  portal: true,
-                  padding: 8,
-                  gutter: 8,
-                  strategy: "fixed",
-                  placements: ["bottom", "top", "left", "right"],
-                  align: "end",
-                }}
-              />
-            </div>
-          </section>
-        )}
-
-        {showEdgeTest && (
-          <div className="demo-edgeStage" aria-hidden="false">
-            <div className="demo-edgeStageCard">
-              <div className="demo-cardTitle" style={{ marginBottom: 8 }}>
-                <span>گوشه پایین راست</span>
-                <span className="demo-muted">portal: true</span>
-              </div>
-              <PersianDatePicker
-                theme={theme}
-                value={edgeValue}
-                onChange={handleEdgeChange}
-                placeholder="YYYY/MM/DD"
-                monthLabels={persianMonthLabels}
-                weekdays={["ش", "ی", "د", "س", "چ", "پ", "ج"]}
-                popover={{
-                  portal: true,
-                  padding: 8,
-                  gutter: 8,
-                  strategy: "fixed",
-                  placements: ["bottom", "top", "left", "right"],
-                  align: "end",
-                }}
-              />
-            </div>
-
-            <div className="demo-edgeStageCard">
-              <div className="demo-cardTitle" style={{ marginBottom: 8 }}>
-                <span>گوشه پایین چپ</span>
-                <span className="demo-muted">portal: false</span>
-              </div>
-              <PersianDatePicker
-                theme={theme}
-                value={edgeValueNoPortal}
-                onChange={handleEdgeNoPortalChange}
-                placeholder="YYYY/MM/DD"
-                monthLabels={persianMonthLabels}
-                weekdays={["ش", "ی", "د", "س", "چ", "پ", "ج"]}
-                popover={{
-                  portal: false,
-                  padding: 8,
-                  gutter: 8,
-                  strategy: "fixed",
-                  placements: ["bottom", "top", "left", "right"],
-                  align: "end",
-                }}
-              />
-            </div>
           </div>
+        </section>
+        )}
+
+        {showEdgeTest && (
+        <div className="demo-edgeStage" aria-hidden="false">
+          <div className="demo-edgeStageCard">
+            <div className="demo-cardTitle" style={{ marginBottom: 8 }}>
+              <span>گوشه پایین راست</span>
+              <span className="demo-muted">portal: true</span>
+            </div>
+            <PersianDatePicker
+              theme={theme}
+              value={edgeValue}
+                onChange={handleEdgeChange}
+              placeholder="YYYY/MM/DD"
+              monthLabels={persianMonthLabels}
+              weekdays={["ش", "ی", "د", "س", "چ", "پ", "ج"]}
+              popover={{
+                portal: true,
+                padding: 8,
+                gutter: 8,
+                strategy: "fixed",
+                placements: ["bottom", "top", "left", "right"],
+                align: "end",
+              }}
+            />
+          </div>
+
+          <div className="demo-edgeStageCard">
+            <div className="demo-cardTitle" style={{ marginBottom: 8 }}>
+              <span>گوشه پایین چپ</span>
+              <span className="demo-muted">portal: false</span>
+            </div>
+            <PersianDatePicker
+              theme={theme}
+              value={edgeValueNoPortal}
+                onChange={handleEdgeNoPortalChange}
+              placeholder="YYYY/MM/DD"
+              monthLabels={persianMonthLabels}
+              weekdays={["ش", "ی", "د", "س", "چ", "پ", "ج"]}
+              popover={{
+                portal: false,
+                padding: 8,
+                gutter: 8,
+                strategy: "fixed",
+                placements: ["bottom", "top", "left", "right"],
+                align: "end",
+              }}
+            />
+          </div>
+        </div>
         )}
 
         {modalOpen && (
+        <div
+          className="demo-modalOverlay"
+          role="dialog"
+          aria-modal="true"
+          onClick={() => setModalOpen(false)}
+        >
           <div
-            className="demo-modalOverlay"
-            role="dialog"
-            aria-modal="true"
-            onClick={() => setModalOpen(false)}
+            className="demo-modal"
+            dir="rtl"
+            onClick={(e) => e.stopPropagation()}
           >
-            <div
-              className="demo-modal"
-              dir="rtl"
-              onClick={(e) => e.stopPropagation()}
-            >
-              <div className="demo-modalHeader">
-                <div>
-                  <div style={{ fontWeight: 800 }}>نمونه استفاده داخل Modal</div>
-                  <div className="demo-muted" style={{ marginTop: 2 }}>
-                    برای جلوگیری از clipping داخل کانتینرهای overflow، پیشنهاد:
-                    <code> portal: true </code>
-                  </div>
+            <div className="demo-modalHeader">
+              <div>
+                <div style={{ fontWeight: 800 }}>نمونه استفاده داخل Modal</div>
+                <div className="demo-muted" style={{ marginTop: 2 }}>
+                  برای جلوگیری از clipping داخل کانتینرهای overflow، پیشنهاد:
+                  <code> portal: true </code>
                 </div>
-                <button
-                  type="button"
-                  className="demo-modalClose"
-                  onClick={() => setModalOpen(false)}
-                  aria-label="Close modal"
-                >
-                  ×
-                </button>
               </div>
+              <button
+                type="button"
+                className="demo-modalClose"
+                onClick={() => setModalOpen(false)}
+                aria-label="Close modal"
+              >
+                ×
+              </button>
+            </div>
 
-              <div className="demo-modalBody">
-                <div
-                  className="demo-row"
-                  style={{ justifyContent: "space-between" }}
-                >
-                  <div style={{ display: "grid", gap: 8 }}>
-                    <div className="demo-muted">Single</div>
-                    <PersianDatePicker
-                      theme={theme}
-                      value={modalValue}
+            <div className="demo-modalBody">
+              <div
+                className="demo-row"
+                style={{ justifyContent: "space-between" }}
+              >
+                <div style={{ display: "grid", gap: 8 }}>
+                  <div className="demo-muted">Single</div>
+                  <PersianDatePicker
+                    theme={theme}
+                    value={modalValue}
                       onChange={handleModalChange}
-                      placeholder="YYYY/MM/DD"
-                      monthLabels={persianMonthLabels}
-                      weekdays={["ش", "ی", "د", "س", "چ", "پ", "ج"]}
-                      popover={{
-                        portal: true,
-                        padding: 8,
-                        gutter: 8,
-                        strategy: "fixed",
-                        placements: ["bottom", "top", "left", "right"],
-                        align: "end",
-                      }}
-                    />
-                  </div>
-
-                  <div style={{ display: "grid", gap: 8 }}>
-                    <div className="demo-muted">Range</div>
-                    <PersianDateRangePicker
-                      theme={theme}
-                      value={modalRange}
-                      onChange={setModalRange}
-                      placeholder="بازه (YYYY/MM/DD - YYYY/MM/DD)"
-                      inputVariant="single"
-                      monthLabels={persianMonthLabels}
-                      weekdays={["ش", "ی", "د", "س", "چ", "پ", "ج"]}
-                      popover={{
-                        portal: true,
-                        padding: 8,
-                        gutter: 8,
-                        strategy: "fixed",
-                        placements: ["bottom", "top", "left", "right"],
-                        align: "end",
-                      }}
-                    />
-                  </div>
+                    placeholder="YYYY/MM/DD"
+                    monthLabels={persianMonthLabels}
+                    weekdays={["ش", "ی", "د", "س", "چ", "پ", "ج"]}
+                    popover={{
+                      portal: true,
+                      padding: 8,
+                      gutter: 8,
+                      strategy: "fixed",
+                      placements: ["bottom", "top", "left", "right"],
+                      align: "end",
+                    }}
+                  />
                 </div>
 
-                <pre className="demo-code">{`single: ${
-                  modalValue ? modalValue.toISOString() : "null"
-                }\nrange:  ${
-                  modalRange.start ? modalRange.start.toISOString() : "null"
-                } - ${
-                  modalRange.end ? modalRange.end.toISOString() : "null"
-                }`}</pre>
+                <div style={{ display: "grid", gap: 8 }}>
+                  <div className="demo-muted">Range</div>
+                  <PersianDateRangePicker
+                    theme={theme}
+                    value={modalRange}
+                    onChange={setModalRange}
+                    placeholder="بازه (YYYY/MM/DD - YYYY/MM/DD)"
+                    inputVariant="single"
+                    monthLabels={persianMonthLabels}
+                    weekdays={["ش", "ی", "د", "س", "چ", "پ", "ج"]}
+                    popover={{
+                      portal: true,
+                      padding: 8,
+                      gutter: 8,
+                      strategy: "fixed",
+                      placements: ["bottom", "top", "left", "right"],
+                      align: "end",
+                    }}
+                  />
+                </div>
               </div>
+
+              <pre className="demo-code">{`single: ${
+                modalValue ? modalValue.toISOString() : "null"
+              }\nrange:  ${
+                modalRange.start ? modalRange.start.toISOString() : "null"
+              } - ${
+                modalRange.end ? modalRange.end.toISOString() : "null"
+              }`}</pre>
             </div>
           </div>
+        </div>
         )}
       </div>
     </div>
