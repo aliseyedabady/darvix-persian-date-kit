@@ -32,7 +32,12 @@ export function fromJalaliParts(parts: JalaliParts): Date {
     throw new Error(`Invalid Jalali date parts: ${ymd}`)
   }
 
-  return d.toDate()
+  const date = d.toDate()
+  // Use noon local time so the calendar day is stable across timezones and DST.
+  // Otherwise date-only parsing can be interpreted as UTC midnight and show as
+  // the previous day in timezones behind UTC (e.g. Americas).
+  date.setHours(12, 0, 0, 0)
+  return date
 }
 
 export function formatJalali(parts: JalaliParts, opts: FormatJalaliOptions = {}): string {
