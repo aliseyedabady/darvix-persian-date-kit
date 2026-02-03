@@ -106,7 +106,7 @@ export function PersianDatePicker(props: PersianDatePickerProps) {
     renderMonthLabel,
     prevIcon,
     nextIcon,
-    showCalendarButton = true,
+    showCalendarButton = false,
     calendarIcon,
     className,
     classes,
