@@ -142,6 +142,7 @@ export type TimePickerClasses = {
  */
 export type BasePickerClasses = {
   root?: string
+  control?: string
   input?: string
   button?: string
   popover?: string

@@ -662,7 +662,7 @@ export function PersianDateRangePicker(props: PersianDateRangePickerProps) {
       dir="rtl"
     >
       {mode === "inline" ? null : (
-        <div className="dvx-pdp__control">
+        <div className={cx("dvx-pdp__control", classes?.control)}>
           {inputVariant === "single" ? (
             <input
               ref={inputRangeRef}

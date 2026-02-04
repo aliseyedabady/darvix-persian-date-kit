@@ -309,6 +309,7 @@ You can override class names per slot:
 | Slot | Used for |
 |---|---|
 | `root` | Root wrapper |
+| `control` | Wrapper around input(s) (popover mode) |
 | `input` | Input element |
 | `button` | Clear button (single picker) |
 | `popover` | Popover container |

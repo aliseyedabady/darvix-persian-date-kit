@@ -826,7 +826,7 @@ export function PersianDatePicker(props: PersianDatePickerProps) {
       dir="rtl"
     >
       {mode === "inline" ? null : (
-        <div className="dvx-pdp__control">
+        <div className={cx("dvx-pdp__control", classes?.control)}>
           <input
             ref={inputRef}
             className={cx("dvx-pdp__input", classes?.input)}
