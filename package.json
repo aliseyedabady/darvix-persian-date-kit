@@ -1,11 +1,13 @@
 {
   "name": "persian-date-kit",
   "version": "1.2.0",
-  "description": "Production-ready Persian (Jalali) date pickers for React with Gregorian-only values.",
+  "description": "Production-ready Persian (Jalali) date pickers for React with Gregorian-only values, optional time picker (wheel/dropdown), and RTL-first UI.",
   "keywords": [
     "react",
     "datepicker",
     "date-picker",
+    "time-picker",
+    "datetime",
     "jalali",
     "persian",
     "shamsi",
@@ -21,8 +23,8 @@
     "type": "git",
     "url": "https://github.com/aliseyedabady/darvix-persian-date-kit.git"
   },
-  "homepage": "https://darvix.ir/products/persian-date-kit",
-  "demo": "https://darvix.ir/products/persian-date-kit",
+  "homepage": "https://avisa360.com/developers/persian-date-kit",
+  "demo": "https://avisa360.com/developers/persian-date-kit",
   "bugs": {
     "url": "https://github.com/aliseyedabady/darvix-persian-date-kit/issues"
   },

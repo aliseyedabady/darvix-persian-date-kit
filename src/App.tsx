@@ -74,12 +74,17 @@ const demoSections: DemoSection[] = [
   {
     id: "time",
     title: "تاریخ + زمان",
-    description: "انتخاب تاریخ و زمان با Time Picker",
+    description: "انتخاب تاریخ و زمان با Time Picker — دو حالت wheel و dropdown",
     props: [
       { name: "timePicker", type: "TimePickerConfig | boolean", default: "undefined", description: "تنظیمات Time Picker" },
       { name: "timePicker.enabled", type: "boolean", description: "فعال‌سازی Time Picker" },
-      { name: "timePicker.format", type: "'HH:mm' | 'HH:mm:ss'", default: "'HH:mm'", description: "فرمت زمان" },
-      { name: "timePicker.defaultTime", type: "{ hour: number; minute: number; second?: number }", description: "زمان پیش‌فرض" },
+      { name: "timePicker.format", type: "'HH:mm' | 'HH:mm:ss'", default: "'HH:mm'", description: "فرمت زمان در ورودی متنی" },
+      { name: "timePicker.variant", type: "'wheel' | 'dropdown'", default: "'wheel'", description: "UI: چرخ اسکرول یا دراپ‌داون قابل تایپ" },
+      { name: "timePicker.showSeconds", type: "boolean", default: "false", description: "نمایش ثانیه (یا format: HH:mm:ss)" },
+      { name: "timePicker.defaultTime", type: "{ hour; minute; second? }", description: "زمان پیش‌فرض وقتی value خالی است" },
+      { name: "timePicker.hourStep", type: "number", default: "1", description: "گام ساعت" },
+      { name: "timePicker.minuteStep", type: "number", default: "1", description: "گام دقیقه" },
+      { name: "timePicker.secondStep", type: "number", default: "1", description: "گام ثانیه" },
     ],
   },
   {
@@ -120,6 +125,7 @@ function App() {
   const [timeValue, setTimeValue] = useState<Date | null>(new Date());
   const [timeValueWithSeconds, setTimeValueWithSeconds] = useState<Date | null>(new Date());
   const [timeValueCustom, setTimeValueCustom] = useState<Date | null>(new Date());
+  const [timeValueDropdown, setTimeValueDropdown] = useState<Date | null>(new Date());
   const [multipleDates, setMultipleDates] = useState<Date[]>([]);
 
   useEffect(() => {
@@ -171,6 +177,14 @@ function App() {
       setTimeValueCustom(date[0] || null);
     } else {
       setTimeValueCustom(date);
+    }
+  };
+
+  const handleTimeDropdownChange = (date: Date | null | Date[]) => {
+    if (Array.isArray(date)) {
+      setTimeValueDropdown(date[0] || null);
+    } else {
+      setTimeValueDropdown(date);
     }
   };
 
@@ -656,6 +670,37 @@ ${multipleDates.map(d => d.toISOString()).join('\n')}`}</pre>
               </div>
               <pre className="demo-code">{`Gregorian: ${
                 timeValueCustom ? timeValueCustom.toISOString() : "null"
+              }`}</pre>
+            </section>
+
+            <section className="demo-card">
+              <div className="demo-cardTitle">
+                <span>تاریخ + زمان (Dropdown)</span>
+                <span className="demo-muted">variant: dropdown</span>
+              </div>
+              <div className="demo-row">
+                <PersianDatePicker
+                  theme={theme}
+                  value={timeValueDropdown}
+                  onChange={handleTimeDropdownChange}
+                  placeholder="YYYY/MM/DD HH:mm"
+                  monthLabels={persianMonthLabels}
+                  weekdays={["ش", "ی", "د", "س", "چ", "پ", "ج"]}
+                  timePicker={{
+                    enabled: true,
+                    format: 'HH:mm',
+                    variant: 'dropdown',
+                  }}
+                  popover={{
+                    portal: true,
+                    padding: 8,
+                    gutter: 8,
+                    strategy: "fixed",
+                  }}
+                />
+              </div>
+              <pre className="demo-code">{`Gregorian: ${
+                timeValueDropdown ? timeValueDropdown.toISOString() : "null"
               }`}</pre>
             </section>
           </>

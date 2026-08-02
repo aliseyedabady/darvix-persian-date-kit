@@ -4,11 +4,20 @@ Production-ready Persian (Jalali) date pickers for React.
 
 [![GitHub](https://img.shields.io/github/stars/aliseyedabady/darvix-persian-date-kit?style=social)](https://github.com/aliseyedabady/darvix-persian-date-kit)
 
-**Repository:** [https://github.com/aliseyedabady/darvix-persian-date-kit](https://github.com/aliseyedabady/darvix-persian-date-kit)
+**Repository:** [https://github.com/aliseyedabady/darvix-persian-date-kit](https://github.com/aliseyedabady/darvix-persian-date-kit)  
+**Demo:** [https://avisa360.com/developers/persian-date-kit](https://avisa360.com/developers/persian-date-kit)
 
 ## Demo
 
 ![persian-date-kit demo](public/demo.webp)
+
+## Features
+- Single, range, and multiple date selection
+- Optional **time picker** with two UI variants: scroll **wheel** and editable **dropdown**
+- Gregorian `Date` values in / out — Jalali only for display & typing
+- Popover + inline modes, light / dark / auto themes
+- Optional React Hook Form adapter
+- Fully themeable via CSS variables and `classes` slots
 
 ## Key principles
 - **Gregorian-only internally**: component values are always `Date | null` (Gregorian). Jalali is only for display/input.
@@ -109,6 +118,13 @@ export function RangeExample() {
 
 ### Date picker with time
 
+Enable time selection with `timePicker`. Two UI variants are available:
+
+| Variant | Description |
+|---|---|
+| `wheel` (default) | iOS-style scroll columns for hour / minute / second |
+| `dropdown` | Compact editable inputs with option lists (type or pick) |
+
 ```tsx
 import { useState } from 'react'
 import { PersianDatePicker } from 'persian-date-kit'
@@ -124,6 +140,7 @@ export function DateTimeExample() {
       timePicker={{
         enabled: true,
         format: 'HH:mm',
+        variant: 'wheel', // or 'dropdown'
         defaultTime: { hour: 12, minute: 0 },
         hourStep: 1,
         minuteStep: 5,
@@ -133,13 +150,33 @@ export function DateTimeExample() {
 }
 ```
 
-Or simply enable with defaults:
+Shorthand (wheel UI, defaults):
 
 ```tsx
 <PersianDatePicker
   value={value}
   onChange={setValue}
-  timePicker={true}  // Uses default time 00:00
+  timePicker={true}
+/>
+```
+
+Scroll wheel:
+
+```tsx
+<PersianDatePicker
+  value={value}
+  onChange={setValue}
+  timePicker={{ enabled: true, variant: 'wheel' }}
+/>
+```
+
+Editable dropdown (type a value or choose from the list):
+
+```tsx
+<PersianDatePicker
+  value={value}
+  onChange={setValue}
+  timePicker={{ enabled: true, variant: 'dropdown' }}
 />
 ```
 
@@ -153,9 +190,14 @@ With seconds:
     enabled: true,
     format: 'HH:mm:ss',
     showSeconds: true,
+    variant: 'dropdown', // works with both variants
   }}
 />
 ```
+
+**Notes:**
+- Time picker is available on `PersianDatePicker` in **single** mode only (not with `multiple`, and not on the range picker).
+- Display / parse of the text input includes time when time picker is enabled (e.g. `1403/10/15 14:30`).
 
 ### Multiple date selection
 
@@ -282,14 +324,15 @@ These props exist on both pickers:
 | Prop | Type | Default | Description |
 |---|---|---:|---|
 | `enabled` | `boolean` | — | Enable time picker |
-| `format?` | `'HH:mm' \| 'HH:mm:ss'` | `'HH:mm'` | Time format |
-| `defaultTime?` | `{ hour: number; minute: number; second?: number }` | `undefined` | Default time when value is null (uses current time if not provided) |
-| `showSeconds?` | `boolean` | `false` | Show seconds stepper (requires `format: 'HH:mm:ss'`) |
-| `hourStep?` | `number` | `1` | Step size for hour increment/decrement |
-| `minuteStep?` | `number` | `1` | Step size for minute increment/decrement |
-| `secondStep?` | `number` | `1` | Step size for second increment/decrement |
+| `format?` | `'HH:mm' \| 'HH:mm:ss'` | `'HH:mm'` | Time format used in the text input |
+| `defaultTime?` | `{ hour: number; minute: number; second?: number }` | `undefined` | Default time when value is null (falls back to current time) |
+| `showSeconds?` | `boolean` | `false` | Show seconds column (also enabled when `format` is `'HH:mm:ss'`) |
+| `hourStep?` | `number` | `1` | Step between hour options |
+| `minuteStep?` | `number` | `1` | Step between minute options |
+| `secondStep?` | `number` | `1` | Step between second options |
+| `variant?` | `TimePickerVariant` (`'wheel' \| 'dropdown'`) | `'wheel'` | Time UI style |
 
-**Note:** You can also pass `timePicker={true}` as a shorthand to enable with defaults.
+`timePicker={true}` is shorthand for `{ enabled: true }` (wheel variant, `HH:mm`).
 
 ### `PopoverConfig`
 
@@ -327,10 +370,18 @@ You can override class names per slot:
 | `dayRangeStart` | **Range picker** range start day |
 | `dayRangeEnd` | **Range picker** range end day |
 | `timePicker` | Time picker container |
-| `timeStepper` | Time stepper wrapper (hour/minute/second) |
-| `timeStepperButton` | Stepper increment/decrement buttons |
-| `timeStepperInput` | Time input field |
+| `timeColumn` | **Wheel** column (hour/minute/second) |
+| `timeItem` | **Wheel** value item |
+| `timeItemSelected` | **Wheel** selected value |
+| `timeHighlight` | **Wheel** center highlight bar |
 | `timeSeparator` | Time separator (`:`) |
+| `timeLabel` | Label under each unit (ساعت / دقیقه / ثانیه) |
+| `timeDropdown` | **Dropdown** field wrapper |
+| `timeDropdownTrigger` | **Dropdown** input + caret shell |
+| `timeDropdownInput` | **Dropdown** editable input |
+| `timeDropdownList` | **Dropdown** options list |
+| `timeDropdownOption` | **Dropdown** option button |
+| `timeDropdownOptionSelected` | **Dropdown** selected option |
 
 ## Styling / Theming
 
@@ -401,6 +452,32 @@ or rely entirely on `classes` and your own styles.
 | Theme variables | Override `--dvx-pdp-*` in your CSS | Brand theming without rewriting CSS |
 | `classes` overrides | Pass Tailwind/utility classes via `classes` | Integrate into your design system |
 | Full custom | Don’t import `styles.css`; write your own | Complete visual control |
+
+## Exports
+
+```ts
+// Components
+import { PersianDatePicker, PersianDateRangePicker } from 'persian-date-kit'
+
+// Types
+import type {
+  TimePickerConfig,
+  TimePickerVariant,
+  TimePickerClasses,
+  PopoverConfig,
+  BasePickerProps,
+  BasePickerClasses,
+} from 'persian-date-kit'
+
+// Utilities
+import { toJalali, toGregorian, parseJalaliText } from 'persian-date-kit'
+
+// React Hook Form adapter
+import { RHF_PersianDatePicker } from 'persian-date-kit/react-hook-form'
+
+// Styles
+import 'persian-date-kit/styles.css'
+```
 
 ## Development (this repo)
 

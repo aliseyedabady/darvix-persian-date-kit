@@ -740,13 +740,22 @@ export function PersianDatePicker(props: PersianDatePickerProps) {
                 hourStep={timeConfig.hourStep}
                 minuteStep={timeConfig.minuteStep}
                 secondStep={timeConfig.secondStep}
+                variant={timeConfig.variant}
                 disabled={disabled}
                 classes={{
                   root: classes?.timePicker,
-                  stepper: classes?.timeStepper,
-                  stepperButton: classes?.timeStepperButton,
-                  stepperInput: classes?.timeStepperInput,
+                  column: classes?.timeColumn,
+                  item: classes?.timeItem,
+                  itemSelected: classes?.timeItemSelected,
+                  highlight: classes?.timeHighlight,
                   separator: classes?.timeSeparator,
+                  label: classes?.timeLabel,
+                  dropdown: classes?.timeDropdown,
+                  dropdownTrigger: classes?.timeDropdownTrigger,
+                  dropdownInput: classes?.timeDropdownInput,
+                  dropdownList: classes?.timeDropdownList,
+                  dropdownOption: classes?.timeDropdownOption,
+                  dropdownOptionSelected: classes?.timeDropdownOptionSelected,
                 }}
               />
             );

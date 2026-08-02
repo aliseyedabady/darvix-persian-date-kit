@@ -4,7 +4,7 @@ export type { PersianDatePickerProps, PersianDatePickerClasses } from './compone
 export { PersianDateRangePicker } from './components/PersianDateRangePicker'
 export type { PersianDateRangePickerProps, PersianDateRangePickerClasses, PersianDateRange } from './components/PersianDateRangePicker'
 
-export type { PopoverConfig, BasePickerProps, BasePickerClasses } from './types/shared'
+export type { PopoverConfig, BasePickerProps, BasePickerClasses, TimePickerConfig, TimePickerVariant, TimePickerClasses } from './types/shared'
 
 export type { JalaliParts, FormatJalaliOptions } from './adapters/dayjsAdapter'
 export { toJalaliParts, fromJalaliParts, formatJalali } from './adapters/dayjsAdapter'

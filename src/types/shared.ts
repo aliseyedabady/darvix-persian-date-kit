@@ -112,6 +112,13 @@ export type BasePickerProps = {
 }
 
 /**
+ * Time picker UI variant.
+ * - `wheel`: scrollable columns (default)
+ * - `dropdown`: editable inputs with option lists
+ */
+export type TimePickerVariant = 'wheel' | 'dropdown'
+
+/**
  * Time picker configuration.
  */
 export type TimePickerConfig = {
@@ -122,6 +129,10 @@ export type TimePickerConfig = {
   hourStep?: number
   minuteStep?: number
   secondStep?: number
+  /**
+   * UI variant: `wheel` (default) or `dropdown`.
+   */
+  variant?: TimePickerVariant
 } | boolean // برای backward compatibility
 
 /**
@@ -129,12 +140,18 @@ export type TimePickerConfig = {
  */
 export type TimePickerClasses = {
   root?: string
-  stepper?: string
-  stepperButton?: string
-  stepperButtonUp?: string
-  stepperButtonDown?: string
-  stepperInput?: string
+  column?: string
+  item?: string
+  itemSelected?: string
+  highlight?: string
   separator?: string
+  label?: string
+  dropdown?: string
+  dropdownTrigger?: string
+  dropdownInput?: string
+  dropdownList?: string
+  dropdownOption?: string
+  dropdownOptionSelected?: string
 }
 
 /**
@@ -156,9 +173,17 @@ export type BasePickerClasses = {
   dayDisabled?: string
   dayToday?: string
   timePicker?: string
-  timeStepper?: string
-  timeStepperButton?: string
-  timeStepperInput?: string
+  timeColumn?: string
+  timeItem?: string
+  timeItemSelected?: string
+  timeHighlight?: string
   timeSeparator?: string
+  timeLabel?: string
+  timeDropdown?: string
+  timeDropdownTrigger?: string
+  timeDropdownInput?: string
+  timeDropdownList?: string
+  timeDropdownOption?: string
+  timeDropdownOptionSelected?: string
 }
 

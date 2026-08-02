@@ -106,6 +106,7 @@
   box-shadow: var(--dvx-pdp-shadow);
   padding: 10px;
   outline: none;
+  overflow: visible;
 }
 
 .dvx-pdp__header {
@@ -259,92 +260,297 @@
 
 .dvx-pdp__time {
   direction: ltr;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 12px;
-  padding: 12px;
+  padding: 10px 8px 8px;
   border-top: 1px solid var(--dvx-pdp-border);
 }
 
-.dvx-pdp__timeStepper {
+.dvx-pdp__timeWheels {
+  position: relative;
   display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 2px;
+  align-items: stretch;
+  justify-content: center;
+  gap: 4px;
 }
 
-.dvx-pdp__timeStepperButton {
-  width: 32px;
-  height: 24px;
-  padding: 0;
-  border: 1px solid var(--dvx-pdp-border);
-  background: var(--dvx-pdp-bg);
-  color: var(--dvx-pdp-fg);
-  cursor: pointer;
-  font-size: 12px;
-  line-height: 1;
+.dvx-pdp__timeHighlight {
+  position: absolute;
+  top: 50%;
+  left: 6px;
+  right: 6px;
+  height: 36px;
+  transform: translateY(-50%);
+  border-radius: 10px;
+  background: var(--dvx-pdp-dayHover);
+  box-shadow: inset 0 0 0 1px var(--dvx-pdp-border);
+  pointer-events: none;
+  z-index: 0;
+}
+
+.dvx-pdp__timeColumn {
+  position: relative;
+  z-index: 1;
+  width: 56px;
+  outline: none;
+  border-radius: 10px;
+}
+
+.dvx-pdp__timeColumn:focus-visible {
+  box-shadow: 0 0 0 3px var(--dvx-pdp-ring);
+}
+
+.dvx-pdp__timeColumn[aria-disabled="true"] {
+  opacity: 0.55;
+  pointer-events: none;
+}
+
+.dvx-pdp__timeScroller {
+  box-sizing: border-box;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  scroll-snap-type: y mandatory;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+  mask-image: linear-gradient(
+    to bottom,
+    transparent 0%,
+    #000 22%,
+    #000 78%,
+    transparent 100%
+  );
+  -webkit-mask-image: linear-gradient(
+    to bottom,
+    transparent 0%,
+    #000 22%,
+    #000 78%,
+    transparent 100%
+  );
+}
+
+.dvx-pdp__timePad {
+  flex-shrink: 0;
+  pointer-events: none;
+}
+
+.dvx-pdp__timeScroller::-webkit-scrollbar {
+  display: none;
+}
+
+.dvx-pdp__timeItem {
   display: flex;
   align-items: center;
   justify-content: center;
-  user-select: none;
-  transition: background 0.15s;
-  border-radius: 6px;
-}
-
-.dvx-pdp__timeStepperButton:hover {
-  background: var(--dvx-pdp-dayHover);
-}
-
-.dvx-pdp__timeStepperButton:active {
-  background: var(--dvx-pdp-accent);
-  color: var(--dvx-pdp-accentFg);
-}
-
-.dvx-pdp__timeStepperButton:disabled {
-  opacity: 0.5;
-  cursor: not-allowed;
-}
-
-.dvx-pdp__timeStepperInput {
-  width: 55px;
-  height: 36px;
-  text-align: center;
-  padding: 4px;
-  border: 1px solid var(--dvx-pdp-border);
-  border-radius: 8px;
+  scroll-snap-align: center;
+  scroll-snap-stop: always;
   font-size: 15px;
-  font-weight: 500;
-  background: var(--dvx-pdp-bg);
+  font-variant-numeric: tabular-nums;
+  font-feature-settings: "tnum";
+  color: var(--dvx-pdp-muted);
+  cursor: pointer;
+  user-select: none;
+  transition: color 0.12s ease, transform 0.12s ease, font-weight 0.12s ease;
+}
+
+.dvx-pdp__timeItem:hover {
   color: var(--dvx-pdp-fg);
-  outline: none;
-  /* Remove default number input arrows */
-  appearance: textfield;
-  -moz-appearance: textfield;
 }
 
-.dvx-pdp__timeStepperInput::-webkit-outer-spin-button,
-.dvx-pdp__timeStepperInput::-webkit-inner-spin-button {
-  -webkit-appearance: none;
-  margin: 0;
+.dvx-pdp__timeItem--selected {
+  color: var(--dvx-pdp-fg);
+  font-weight: 700;
+  font-size: 17px;
+  transform: scale(1.04);
 }
 
-.dvx-pdp__timeStepperInput:focus {
+.dvx-pdp__timeSeparator {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 12px;
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--dvx-pdp-muted);
+  user-select: none;
+  pointer-events: none;
+}
+
+.dvx-pdp__timeLabels {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  margin-top: 6px;
+}
+
+.dvx-pdp__timeLabel {
+  width: 56px;
+  text-align: center;
+  font-size: 11px;
+  color: var(--dvx-pdp-muted);
+  user-select: none;
+}
+
+.dvx-pdp__timeLabelSpacer {
+  width: 12px;
+  flex-shrink: 0;
+}
+
+/* Dropdown variant */
+.dvx-pdp__time--dropdown {
+  overflow: visible;
+}
+
+.dvx-pdp__timeDropdownRow {
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  gap: 6px;
+  padding: 2px 0 0;
+}
+
+.dvx-pdp__timeDropdownGroup {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+}
+
+.dvx-pdp__timeDropdownGroup .dvx-pdp__timeLabel {
+  width: auto;
+  min-width: 64px;
+}
+
+.dvx-pdp__timeSeparator--dropdown {
+  height: 36px;
+  width: 10px;
+  align-self: flex-start;
+}
+
+.dvx-pdp__timeDropdown {
+  position: relative;
+  z-index: 2;
+}
+
+.dvx-pdp__timeDropdown--open {
+  z-index: 5;
+}
+
+.dvx-pdp__timeDropdownTrigger {
+  display: flex;
+  align-items: stretch;
+  width: 68px;
+  height: 36px;
+  border: 1px solid var(--dvx-pdp-border);
+  border-radius: 10px;
+  background: var(--dvx-pdp-bg);
+  overflow: hidden;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.dvx-pdp__timeDropdown--open .dvx-pdp__timeDropdownTrigger,
+.dvx-pdp__timeDropdownTrigger:focus-within {
   border-color: var(--dvx-pdp-accent);
-  box-shadow: 0 0 0 2px var(--dvx-pdp-ring);
+  box-shadow: 0 0 0 3px var(--dvx-pdp-ring);
 }
 
-.dvx-pdp__timeStepperInput:disabled {
+.dvx-pdp__timeDropdownInput {
+  flex: 1;
+  min-width: 0;
+  width: 100%;
+  border: 0;
+  outline: none;
+  background: transparent;
+  color: var(--dvx-pdp-fg);
+  text-align: center;
+  font-size: 15px;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+  padding: 0 2px 0 8px;
+}
+
+.dvx-pdp__timeDropdownInput:disabled {
   opacity: 0.6;
   cursor: not-allowed;
 }
 
-.dvx-pdp__timeSeparator {
-  font-size: 18px;
-  font-weight: 500;
+.dvx-pdp__timeDropdownCaret {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  border: 0;
+  border-left: 1px solid var(--dvx-pdp-border);
+  background: transparent;
   color: var(--dvx-pdp-muted);
-  padding: 0 4px;
-  user-select: none;
+  cursor: pointer;
+  padding: 0;
+}
+
+.dvx-pdp__timeDropdownCaret:hover {
+  background: var(--dvx-pdp-dayHover);
+  color: var(--dvx-pdp-fg);
+}
+
+.dvx-pdp__timeDropdownCaret:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.dvx-pdp__timeDropdown--open .dvx-pdp__timeDropdownCaret svg {
+  transform: rotate(180deg);
+}
+
+.dvx-pdp__timeDropdownCaret svg {
+  transition: transform 0.15s ease;
+}
+
+.dvx-pdp__timeDropdownList {
+  position: absolute;
+  top: calc(100% + 4px);
+  left: 0;
+  right: 0;
+  max-height: 168px;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  border: 1px solid var(--dvx-pdp-border);
+  border-radius: 10px;
+  background: var(--dvx-pdp-bg);
+  box-shadow: var(--dvx-pdp-shadow);
+  padding: 4px;
+  z-index: 20;
+  scrollbar-width: thin;
+}
+
+.dvx-pdp__timeDropdownOption {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 32px;
+  border: 0;
+  border-radius: 8px;
+  background: transparent;
+  color: var(--dvx-pdp-fg);
+  font-size: 14px;
+  font-variant-numeric: tabular-nums;
+  cursor: pointer;
+  padding: 0;
+}
+
+.dvx-pdp__timeDropdownOption:hover {
+  background: var(--dvx-pdp-dayHover);
+}
+
+.dvx-pdp__timeDropdownOption--selected {
+  background: var(--dvx-pdp-accent);
+  color: var(--dvx-pdp-accentFg);
+  font-weight: 600;
+}
+
+.dvx-pdp__timeDropdownOption--selected:hover {
+  background: var(--dvx-pdp-accent);
+  color: var(--dvx-pdp-accentFg);
 }
 
 
